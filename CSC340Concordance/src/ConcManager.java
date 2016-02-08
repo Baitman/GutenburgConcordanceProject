@@ -1,8 +1,8 @@
 public class ConcManager<T>{
-    private T HashTable;
+    private T[] HashTable;
     private String keyword;
     
-    public ConcManager(T HashTable){
+    public ConcManager(T[] HashTable){
         this.HashTable = HashTable;
     }
     
