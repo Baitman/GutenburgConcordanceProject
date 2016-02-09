@@ -55,6 +55,7 @@ public class ConcManager<T>{
     public String[] adjacentQuery(String word, Boolean bool){
         setKeyword(word);
         
+        //not sure how this is going to work yet
         return null;
     }
     
