@@ -1,46 +1,53 @@
-public class ConcManager<T>{
-    private T[] HashTable;
-    private String keyword;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+/*
+*Concordance Manager 
+*/
+public class ConcManager{
+    private HashMap<String, Object> HashTable;
+    private Object word;
     
-    public ConcManager(T[] HashTable){
+    public ConcManager(HashMap<String, Object> HashTable){
         this.HashTable = HashTable;
     }
-    
-    public void setKeyword(String word){
-        keyword = word;
+        
+    private void findWordObject(String word){          
+        this.word = HashTable.get(word);
     }
     
+    /*
+    *
+    */
     public Integer[] lineListQuery(String word){
-        setKeyword(word);
-                
+        
+        findWordObject(word);
         //returns an array of lines where the word appears
         //ex. [1, 5, 10, 55, 105]
-        return null;
+        return word.getLineList();
     }
     
     public Integer numLineListQuery(String word){
-        setKeyword(word);
+        findWordObject(word);
         
         //returns an integer value for number of lines the word appears
-        return 0;
+        return word.getNumLineList();
     }
     
     public Integer appearQuery(String word){
-        setKeyword(word);
         
         //returns an integer value of the number of times the word appears
         return 0;
     }
     
     public Integer rankQuery(String word){
-        setKeyword(word);
         
         //returns an integer value for the rank of the word
         return 0;
     }
     
     public String[][] distanceQuery(String word, Integer distance){
-        setKeyword(word);
         
         
         //returns a 2D array, where each occurence of the word is a separate row
@@ -53,14 +60,8 @@ public class ConcManager<T>{
     }
     
     public String[] adjacentQuery(String word, Boolean bool){
-        setKeyword(word);
         
         //not sure how this is going to work yet
-        return null;
-    }
-    
-    private int find(String word){
-        
-        return 0;
+        return null;    
     }
 }
