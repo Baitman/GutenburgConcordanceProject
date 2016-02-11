@@ -19,13 +19,13 @@ public class ConcManager{
     /*
     *
     */
-    public Integer[] lineListQuery(String word){
-        
-        findWordObject(word);
-        //returns an array of lines where the word appears
-        //ex. [1, 5, 10, 55, 105]
-        return word.getLineList();
-    }
+//    public Integer[] lineListQuery(String word){
+//        
+//        findWordObject(word);
+//        //returns an array of lines where the word appears
+//        //ex. [1, 5, 10, 55, 105]
+//        return word.getLineList();
+//    }
     
     public Integer numLineListQuery(String word){
         findWordObject(word);

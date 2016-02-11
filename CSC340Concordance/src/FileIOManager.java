@@ -66,7 +66,8 @@ public class FileIOManager {
         
         try {
 
-            File file = new File(currentDirectory.toString() + bookTitle);
+            File file = new File(currentDirectory.getPath() + File.separator + bookTitle);
+            System.out.println(file);
 
             Scanner reader = new Scanner(file);
 

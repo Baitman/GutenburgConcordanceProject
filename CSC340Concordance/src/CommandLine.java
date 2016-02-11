@@ -56,7 +56,9 @@ public class CommandLine {
                 break;
             case ("findbk"):
                 command = Command.FINDBK;
+                if(flowStateTransition(command)){
                 System.out.println(fileIO.viewBooks());
+                }
                 break;
             case ("listbk"):
                 command = Command.LISTBK;
@@ -142,7 +144,8 @@ public class CommandLine {
         if (flowState == FlowState.SETUP && c != Command.SETDIR) {
             System.out.println("Directory isn't set. Please enter a directory path");
             return false;
-        } else if (flowState == FlowState.FETCH && !(c != Command.LOADBK || c != Command.LOADCS)) {
+        } else if (flowState == FlowState.FETCH && !(c != Command.LOADBK || c != Command.LOADCS || c != Command.FINDBK
+                || c != Command.LISTBK)) {
             System.out.println("A book or concordance must be loaded at this point.");
             System.out.println("Please load a book or concordance");
             return false;

@@ -5,113 +5,116 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-
-
 /**
  * Concordance class.
- * 
+ *
  * @author Charles Mayse
  */
-public class Concordance implements Serializable{
+public class Concordance implements Serializable {
+
     /**
      * Fields
-     * 
-     * concordance - HashMap, holds the hashmap
-     * concordanceMap - Map, creates the initial mapping of key-value pairs
-     * textArr - String[] holds the words to turn into keys.
+     *
+     * concordance - HashMap, holds the hashmap concordanceMap - Map, creates
+     * the initial mapping of key-value pairs textArr - String[] holds the words
+     * to turn into keys.
      */
     private HashMap concordance;
-    private Map concordanceMap;
     private String[] textArr;
-    
+
     /**
-     * Constructor for Concordance class - creates HashMap after receiving
-     * a string, the hash only represents (word,wordCount).
-     * 
-     * TODO This needs updating for line counts and detecting unnecessary 
-     * words and characters.
-     * 
+     * Constructor for Concordance class - creates HashMap after receiving a
+     * string, the hash only represents (word,wordCount).
+     *
+     * TODO This needs updating for line counts and detecting unnecessary words
+     * and characters.
+     *
      * @param textFileString the string representation of a Gutenberg book
      */
-   public Concordance(String textFileString){
+    public Concordance(String textFileString) {
         /**
-        * Each word will be placed into an element of the string array, textArr
-        * Using the fact that each word is separated by a space, the space
-        * character will be used as a delimiter.
-        * 
-        */
-       textFileString = removePreamble(textFileString);
-       textArr = textFileString.split(" ");
-       
-       /**
-        * For each item in the textArr, the concordance map will be checked
-        * to make sure that there isn't already a key-value pair for that word.
-        * If the word hasn't been made into a key-value pair, then initialize 
-        * a key-value pair to (word,0). If there is a key-value pair already,
-        * replace the key-value pair with (word,++wordCount).
-        */
-       for(String item : textArr){
-           if(!concordanceMap.containsKey(item)){
-               concordanceMap.put(item, 0);
-           }
-           else{
-               int i = (int)concordanceMap.get(item);
-               concordanceMap.replace(item, ++i);
-           }
-       }
-       
-       concordance = new HashMap(concordanceMap);
-   }
-   
-   /**
-    * Returns the concordance hashmap
-    * @return the hashmap (word,wordCount).
-    */
-   public HashMap getConcordance(){
-       return this.concordance;
-   }
-    
+         * Each word will be placed into an element of the string array, textArr
+         * Using the fact that each word is separated by a space, the space
+         * character will be used as a delimiter.
+         *
+         */
+        textFileString = removePreamble(textFileString);
+        textArr = textFileString.split(" ");
+        System.out.println(textArr.length);
+        concordance = new HashMap<String,Integer>();
+
+        /**
+         * For each item in the textArr, the concordance map will be checked to
+         * make sure that there isn't already a key-value pair for that word. If
+         * the word hasn't been made into a key-value pair, then initialize a
+         * key-value pair to (word,0). If there is a key-value pair already,
+         * replace the key-value pair with (word,++wordCount).
+         */
+        for (String item : textArr) {
+            if (!concordance.containsKey(item)) {
+                concordance.put(item, 0);
+            } else if (item == null) {
+                break;
+            } else {
+                int i = (int) concordance.get(item);
+                concordance.replace(item, ++i);
+            }
+        }
+
+    }
+
     /**
-    * This method needs to be implemented, simply returns the string passed
-    * to it.
-    * TODO Implement method.
-    * @param s Text to remove preamble.
-    * @return 
-    */
-    private String removePreamble(String s){
+     * Returns the concordance hashmap
+     *
+     * @return the hashmap (word,wordCount).
+     */
+    public HashMap getConcordance() {
+        return this.concordance;
+    }
+
+    /**
+     * This method needs to be implemented, simply returns the string passed to
+     * it. TODO Implement method.
+     *
+     * @param s Text to remove preamble.
+     * @return
+     */
+    private String removePreamble(String s) {
         return s;
     }
-    
+
     /**
      * This method will be used for future implementations of concordance
      */
-    private class Word implements Serializable{
+    private class Word implements Serializable {
+
         private String string;
-        
-        public Word(String s){
+
+        public Word(String s) {
             this.string = s;
         }
-        
-        public void setString(String s){
+
+        public void setString(String s) {
             this.string = s;
         }
-        
-        public String getString(){
+
+        public String getString() {
             return this.string;
         }
     }
-    
+
     /**
      * This method will be used for future implementations of concordance
      */
-    private class Line implements Serializable{
+    private class Line implements Serializable {
+
         private int location;
-        
-        public void setLine(int i){
+
+        public void setLine(int i) {
             this.location = i;
         }
-        
-        public int getLine(){
+
+        public int getLine() {
             return this.location;
         }
     }
