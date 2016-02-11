@@ -12,26 +12,21 @@ public class ConcManager{
         this.HashTable = HashTable;
     }
         
-    private void findWordObject(String word){          
-        this.word = HashTable.get(word);
-    }
-    
+   
     /*
     *
     */
     public Integer[] lineListQuery(String word){
         
-        findWordObject(word);
         //returns an array of lines where the word appears
         //ex. [1, 5, 10, 55, 105]
-        return word.getLineList();
+        return null;
     }
     
     public Integer numLineListQuery(String word){
-        findWordObject(word);
         
         //returns an integer value for number of lines the word appears
-        return word.getNumLineList();
+        return 0;
     }
     
     public Integer appearQuery(String word){
