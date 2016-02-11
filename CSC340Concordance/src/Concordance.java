@@ -8,18 +8,48 @@ import java.util.Set;
 
 
 /**
- * "Title" was changed to "Concordance"
+ * Concordance class.
  * 
+ * @author Charles Mayse
  */
 public class Concordance implements Serializable{
+    /**
+     * Fields
+     * 
+     * concordance - HashMap, holds the hashmap
+     * concordanceMap - Map, creates the initial mapping of key-value pairs
+     * textArr - String[] holds the words to turn into keys.
+     */
     private HashMap concordance;
     private Map concordanceMap;
     private String[] textArr;
     
+    /**
+     * Constructor for Concordance class - creates HashMap after receiving
+     * a string, the hash only represents (word,wordCount).
+     * 
+     * TODO This needs updating for line counts and detecting unnecessary 
+     * words and characters.
+     * 
+     * @param textFileString the string representation of a Gutenberg book
+     */
    public Concordance(String textFileString){
+        /**
+        * Each word will be placed into an element of the string array, textArr
+        * Using the fact that each word is separated by a space, the space
+        * character will be used as a delimiter.
+        * 
+        */
        textFileString = removePreamble(textFileString);
        textArr = textFileString.split(" ");
        
+       /**
+        * For each item in the textArr, the concordance map will be checked
+        * to make sure that there isn't already a key-value pair for that word.
+        * If the word hasn't been made into a key-value pair, then initialize 
+        * a key-value pair to (word,0). If there is a key-value pair already,
+        * replace the key-value pair with (word,++wordCount).
+        */
        for(String item : textArr){
            if(!concordanceMap.containsKey(item)){
                concordanceMap.put(item, 0);
@@ -32,8 +62,16 @@ public class Concordance implements Serializable{
        
        concordance = new HashMap(concordanceMap);
    }
-    
+   
    /**
+    * Returns the concordance hashmap
+    * @return the hashmap (word,wordCount).
+    */
+   public HashMap getConcordance(){
+       return this.concordance;
+   }
+    
+    /**
     * This method needs to be implemented, simply returns the string passed
     * to it.
     * TODO Implement method.
@@ -44,9 +82,9 @@ public class Concordance implements Serializable{
         return s;
     }
     
-
-    
-    
+    /**
+     * This method will be used for future implementations of concordance
+     */
     private class Word implements Serializable{
         private String string;
         
@@ -63,6 +101,9 @@ public class Concordance implements Serializable{
         }
     }
     
+    /**
+     * This method will be used for future implementations of concordance
+     */
     private class Line implements Serializable{
         private int location;
         
@@ -76,6 +117,7 @@ public class Concordance implements Serializable{
     }
 }
     
+//<editor-fold>
 //    /**
 //     * This main needs to be deleted
 //     * @param args 
@@ -216,4 +258,4 @@ public class Concordance implements Serializable{
 //        else return 0;
 //    }
 //}
-//    
+//</editor-fold>    
