@@ -111,7 +111,7 @@ public class Concordance implements Serializable {
     public HashMap getConcordance() {
         return this.concordance;
     }
-    
+}
     
     
     /////////None of the below is needed for implementation///////////////
