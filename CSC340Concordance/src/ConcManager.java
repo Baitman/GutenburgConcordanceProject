@@ -5,10 +5,10 @@ import java.util.Map;
 *Concordance Manager 
 */
 public class ConcManager{
-    private HashMap<String, Object> HashTable;
+    private HashMap<String, Integer> HashTable;
     private Object word;
     
-    public ConcManager(HashMap<String, Object> HashTable){
+    public ConcManager(HashMap<String, Integer> HashTable){
         this.HashTable = HashTable;
     }
         

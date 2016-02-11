@@ -26,6 +26,10 @@ public class FileIOManager {
     public boolean verify(){
         return currentDirectory.isDirectory();
     }
+    
+    public String getCurrentDirectory(){
+        return currentDirectory.getPath();
+    }
 
     public void saveConc(Concordance con) {
         Concordance inputcon = con;
@@ -67,7 +71,6 @@ public class FileIOManager {
         try {
 
             File file = new File(currentDirectory.getPath() + File.separator + bookTitle);
-            System.out.println(file);
 
             Scanner reader = new Scanner(file);
 

@@ -48,11 +48,12 @@ public class CommandLine {
                     flowState = FlowState.FETCH;
                     if (userCommand.length < 2) {
                         fileIO = new FileIOManager();
+                        System.out.println("\tCurrent directory is set to: " + fileIO.getCurrentDirectory());
                     } else {
                         fileIO = new FileIOManager(userCommand[1]);
                     }
                 }
-                System.out.println(fileIO.verify());
+                System.out.println("\tDirectory valid?" + ((fileIO.verify())?"Yes":"No"));
                 break;
             case ("findbk"):
                 command = Command.FINDBK;
@@ -63,7 +64,7 @@ public class CommandLine {
             case ("listbk"):
                 command = Command.LISTBK;
                 if (flowStateTransition(command)) {
-                    fileIO.viewBooks();
+                    System.out.println(fileIO.viewBooks());
                 }
                 break;
             case ("loadbk"):
@@ -71,6 +72,7 @@ public class CommandLine {
                 if (flowStateTransition(command)) {
                     flowState = FlowState.MANIPULATE;
                     fileIO.loadBook(userCommand[1]);
+                    System.out.println("\tLoaded.");
                 }
                 break;
             case ("makecs"):
@@ -78,6 +80,7 @@ public class CommandLine {
                 if (flowStateTransition(command)) {
                     concordance = new Concordance(fileIO.getText());
                     concManager = new ConcManager(concordance.getConcordance());
+                    System.out.println("\tDone.");
                 }
             case ("savecs"):
                 command = Command.SAVECS;
@@ -101,7 +104,7 @@ public class CommandLine {
                 command = Command.QAPPR;
                 if (flowStateTransition(command)) {
                     int wordCount = concManager.numLineListQuery(userCommand[1]);
-                    System.out.println(userCommand[1] + " appears " + wordCount + ((wordCount == 1) ? " time" : " times"));
+                    System.out.println("\t"+userCommand[1] + " appears " + wordCount + ((wordCount == 1) ? " time" : " times"));
                 }
                 break;
             case ("qrank"):

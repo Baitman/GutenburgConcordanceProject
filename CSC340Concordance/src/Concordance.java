@@ -40,19 +40,18 @@ public class Concordance implements Serializable {
          */
         textFileString = removePreamble(textFileString);
         textArr = textFileString.split(" ");
-        System.out.println(textArr.length);
         concordance = new HashMap<String,Integer>();
 
         /**
          * For each item in the textArr, the concordance map will be checked to
          * make sure that there isn't already a key-value pair for that word. If
          * the word hasn't been made into a key-value pair, then initialize a
-         * key-value pair to (word,0). If there is a key-value pair already,
+         * key-value pair to (word,1). If there is a key-value pair already,
          * replace the key-value pair with (word,++wordCount).
          */
         for (String item : textArr) {
             if (!concordance.containsKey(item)) {
-                concordance.put(item, 0);
+                concordance.put(item, 1);
             } else if (item == null) {
                 break;
             } else {
