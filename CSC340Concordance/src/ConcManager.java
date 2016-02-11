@@ -30,8 +30,7 @@ public class ConcManager{
     public Integer numLineListQuery(String word){
         findWordObject(word);
         
-        //returns an integer value for number of lines the word appears
-        return word.getNumLineList();
+        return (int)HashTable.get(word);
     }
     
     public Integer appearQuery(String word){
