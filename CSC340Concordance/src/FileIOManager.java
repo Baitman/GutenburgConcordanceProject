@@ -15,10 +15,6 @@ public class FileIOManager{
 private File currentDirectory;
 private FileOutputStream outputStream;
 
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
 public FileIOManager(String s){
      currentDirectory = new File(s);
      
@@ -61,59 +57,48 @@ public Concordance loadConc(String condir){
     }
     return null;
 }
-<<<<<<< Updated upstream
 
-public File loadBook(String bookloc){
-    String textcontent = "";
-    String line = null;
-=======
+
 public String loadBook(String bookFile){
-
-    String text = "";
+    String line = null;
+    String textcontent = "";
     
->>>>>>> Stashed changes
+    String text = "";
    try {
             File file = new File(currentDirectory.toString()+bookFile);
+FileReader fileReader = 
+                new FileReader(bookFile);
 
+            BufferedReader buffReader = 
+                new BufferedReader(fileReader);
             Scanner reader = new Scanner(file);
-
-<<<<<<< Updated upstream
-            while((line = buffReader.readLine()) != null) { 
+           while((line = buffReader.readLine()) != null) { 
                 textcontent += line;
-=======
-            //The "|" is used as a line delimiter
+ //The "|" is used as a line delimiter
             while(reader.hasNext()) { 
                 text+=(reader.nextLine()+" ");
->>>>>>> Stashed changes
-            }   
+  }   
 
             reader.close();         
         }
-        catch(FileNotFoundException ex) {
+        }catch(FileNotFoundException ex) {
             System.out.println( "Unable to open file '" +  currentDirectory + "'");
             ex.printStackTrace();
-        }
-<<<<<<< Updated upstream
-        // write text content to a txt file
-        try {
-			File file = new File("test2.txt");
-			FileWriter fileWriter = new FileWriter(file);
-			PrintWriter printWriter = new PrintWriter(fileWriter);
-			printWriter.print(textcontent);
-			fileWriter.flush();
-			fileWriter.close();
-                        return file;
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-   
-        // return file not string 
-    return null;
-=======
-    
-    return text;
->>>>>>> Stashed changes
+        } catch (IOException ex) {
+        Logger.getLogger(FileIOManager.class.getName()).log(Level.SEVERE, null, ex);
+    }
+return text;
+
 }
+
+
+
+
+
+
+
+
+
 public String viewBooks(){
     String dirString = "";
  File[] dirlist = currentDirectory.listFiles();
