@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -6,33 +7,31 @@ import java.util.Map;
 */
 public class ConcManager{
     private HashMap<String, Object> HashTable;
-    private Object word;
     
     public ConcManager(HashMap<String, Object> HashTable){
         this.HashTable = HashTable;
     }
-        
-   
+  
+    
     /*
     *
     */
-    public Integer[] lineListQuery(String word){
-        
-        //returns an array of lines where the word appears
-        //ex. [1, 5, 10, 55, 105]
-        return null;
+   public ArrayList<Integer> lineListQuery(String word){
+       
+        //need to get rid of duplicate lines
+        return ((Word) HashTable.get(word.toLowerCase())).getListOfLines();
     }
     
     public Integer numLineListQuery(String word){
-        
-        //returns an integer value for number of lines the word appears
-        return 0;
+        //need to get rid of duplicate lines
+        ArrayList <Integer> list = ((Word) HashTable.get(word.toLowerCase())).getListOfLines();
+        list.trimToSize();
+        return list.size();
     }
     
-    public Integer appearQuery(String word){
-        
+    public Integer appearQuery(String word){             
         //returns an integer value of the number of times the word appears
-        return 0;
+        return ((Word) HashTable.get(word.toLowerCase())).getOccurrence();
     }
     
     public Integer rankQuery(String word){
