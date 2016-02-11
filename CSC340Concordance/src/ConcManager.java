@@ -28,8 +28,6 @@ public class ConcManager{
 //    }
     
     public Integer numLineListQuery(String word){
-        findWordObject(word);
-        
         return (int)HashTable.get(word);
     }
     
