@@ -2,8 +2,8 @@
  *  Accomplishes 5 tasks
  * 1. Load a book into memory 
  * 2. Save a book into a specified directory
- * 3. Load a concordanence locally to memory 
- * 4. Save a conccordanence into a specified directory
+ * 3. Load a concordance locally to memory 
+ * 4. Save a conccordance into a specified directory
  * 5. View saved books and concordance
  */
 import java.io.*;
@@ -15,6 +15,10 @@ public class FileIOManager{
 private File currentDirectory;
 private FileOutputStream outputStream;
 
+
+
+
+
 public FileIOManager(String s){
      currentDirectory = new File(s);
      
@@ -23,6 +27,20 @@ public FileIOManager(String s){
 public FileIOManager(){
     currentDirectory = new File(System.getProperty("user.dir"));
 }
+
+public File getCurrentDirectory(){
+    return this.currentDirectory;
+}
+public FileOutputStream getOutputStream(){
+    return this.outputStream;
+}
+public void setOutputStream(FileOutputStream fos){
+    this.outputStream = fos;
+}
+public void setCurrentDirectory(File dir){
+    this.currentDirectory = dir;
+}
+
 
 public void saveConc(Concordance con){
     Concordance inputcon = con;
@@ -146,6 +164,25 @@ File[] dirlist = dir.listFiles();
     } 
  
  return conDir;
+}
+/**
+ * Future methods that may need to be implemented if books and concordances are
+ * to be saved in the same directory. These methods would be better than just 
+ * the standard .isFile() check. These methods cannot be implemented without 
+ * getters or setters
+ * @param c
+ * @return 
+ */
+
+public boolean isConc(Concordance c){
+    throw new UnsupportedOperationException();
+   //return c.isFile() && c.getHashmap != null;
+}
+
+public boolean isBook(File b){
+    throw new UnsupportedOperationException();
+    //What are the filds for a book object?
+   //return c.isFile() && b.title != null;
 }
 
 
