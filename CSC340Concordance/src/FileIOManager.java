@@ -3,7 +3,7 @@
  * 1. Load a book into memory 
  * 2. Save a book into a specified directory
  * 3. Load a concordance locally to memory 
- * 4. Save a conccordance into a specified directory
+ * 4. Save a concordance into a specified directory
  * 5. View saved books and concordance
  */
 import java.io.*;
@@ -43,7 +43,7 @@ public void setCurrentDirectory(File dir){
 
 
 public void saveConc(Concordance con){
-    Concordance inputcon = con;
+    //Concordance inputcon = con;
     //String contitle = ;
     
     FileOutputStream fos;
@@ -121,7 +121,7 @@ public String viewBooks(){
     String dirString = "";
  File[] dirlist = currentDirectory.listFiles();
     for (int i = 0; i < dirlist.length; i++) {
-        if(dirlist[i].isFile()){
+        if(isBook(dirlist[i])){
             dirString += dirlist[i].getName();
         }
     }
@@ -134,7 +134,7 @@ String dirString = "";
 File dir = new File(bookDir);
 File[] dirlist = dir.listFiles();
     for (int i = 0; i < dirlist.length; i++) {
-        if(dirlist[i].isFile()){
+        if(isBook(dirlist[i])){
             dirString += dirlist[i].getName();
         }
     }
@@ -146,8 +146,8 @@ public String viewSavedConc(){
     String dirString = "";
  File[] dirlist = currentDirectory.listFiles();
     for (int i = 0; i < dirlist.length; i++) {
-        if(dirlist[i].isFile()){
-            dirString += dirlist[i].getName();
+        if(isConc(dirlist[i])){
+            dirString += dirlist[i].getName() + "\n";
         }
     }
 return dirString;
@@ -158,8 +158,8 @@ public String viewSavedConc(String conDir){
 File dir = new File(conDir);
 File[] dirlist = dir.listFiles();
     for (int i = 0; i < dirlist.length; i++) {
-        if(dirlist[i].isFile()){
-            dirString += dirlist[i].getName();
+        if(isConc(dirlist[i])){
+            dirString += dirlist[i].getName() +"\n";
         }
     } 
  
@@ -174,15 +174,12 @@ File[] dirlist = dir.listFiles();
  * @return 
  */
 
-public boolean isConc(Concordance c){
-    throw new UnsupportedOperationException();
-   //return c.isFile() && c.getHashmap != null;
+public static boolean isConc(File c){
+    return c.isFile() && !isBook(c);
 }
 
-public boolean isBook(File b){
-    throw new UnsupportedOperationException();
-    //What are the filds for a book object?
-   //return c.isFile() && b.title != null;
+public static boolean isBook(File b){
+   return b.isFile() && b.toString().contains("By");
 }
 
 
