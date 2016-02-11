@@ -15,6 +15,10 @@ public class FileIOManager{
 private File currentDirectory;
 private FileOutputStream outputStream;
 
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 public FileIOManager(String s){
      currentDirectory = new File(s);
      
@@ -57,30 +61,39 @@ public Concordance loadConc(String condir){
     }
     return null;
 }
+<<<<<<< Updated upstream
 
 public File loadBook(String bookloc){
     String textcontent = "";
     String line = null;
+=======
+public String loadBook(String bookFile){
+
+    String text = "";
+    
+>>>>>>> Stashed changes
    try {
-            // FileReader reads text files in the default encoding.
-            FileReader fileReader = 
-                new FileReader(bookloc);
+            File file = new File(currentDirectory.toString()+bookFile);
 
-            BufferedReader buffReader = 
-                new BufferedReader(fileReader);
+            Scanner reader = new Scanner(file);
 
+<<<<<<< Updated upstream
             while((line = buffReader.readLine()) != null) { 
                 textcontent += line;
+=======
+            //The "|" is used as a line delimiter
+            while(reader.hasNext()) { 
+                text+=(reader.nextLine()+" ");
+>>>>>>> Stashed changes
             }   
 
-            buffReader.close();         
+            reader.close();         
         }
         catch(FileNotFoundException ex) {
-            System.out.println( "Unable to open file '" +  bookloc + "'");                
+            System.out.println( "Unable to open file '" +  currentDirectory + "'");
+            ex.printStackTrace();
         }
-        catch(IOException ex) {
-            System.out.println( "Error reading file '" + bookloc + "'");                  
-        }
+<<<<<<< Updated upstream
         // write text content to a txt file
         try {
 			File file = new File("test2.txt");
@@ -96,6 +109,10 @@ public File loadBook(String bookloc){
    
         // return file not string 
     return null;
+=======
+    
+    return text;
+>>>>>>> Stashed changes
 }
 public String viewBooks(){
     String dirString = "";
