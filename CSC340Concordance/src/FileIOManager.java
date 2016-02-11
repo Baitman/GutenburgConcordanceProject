@@ -2,8 +2,8 @@
  *  Accomplishes 5 tasks
  * 1. Load a book into memory 
  * 2. Save a book into a specified directory
- * 3. Load a concordanence locally to memory 
- * 4. Save a conccordanence into a specified directory
+ * 3. Load a concordance locally to memory 
+ * 4. Save a concordance into a specified directory
  * 5. View saved books and concordance
  */
 import java.io.*;
@@ -15,10 +15,6 @@ public class FileIOManager{
 private File currentDirectory;
 private FileOutputStream outputStream;
 
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
 public FileIOManager(String s){
      currentDirectory = new File(s);
      
@@ -61,39 +57,12 @@ public Concordance loadConc(String condir){
     }
     return null;
 }
-<<<<<<< Updated upstream
+
 
 public File loadBook(String bookloc){
     String textcontent = "";
     String line = null;
-=======
-public String loadBook(String bookFile){
 
-    String text = "";
-    
->>>>>>> Stashed changes
-   try {
-            File file = new File(currentDirectory.toString()+bookFile);
-
-            Scanner reader = new Scanner(file);
-
-<<<<<<< Updated upstream
-            while((line = buffReader.readLine()) != null) { 
-                textcontent += line;
-=======
-            //The "|" is used as a line delimiter
-            while(reader.hasNext()) { 
-                text+=(reader.nextLine()+" ");
->>>>>>> Stashed changes
-            }   
-
-            reader.close();         
-        }
-        catch(FileNotFoundException ex) {
-            System.out.println( "Unable to open file '" +  currentDirectory + "'");
-            ex.printStackTrace();
-        }
-<<<<<<< Updated upstream
         // write text content to a txt file
         try {
 			File file = new File("test2.txt");
@@ -109,10 +78,7 @@ public String loadBook(String bookFile){
    
         // return file not string 
     return null;
-=======
     
-    return text;
->>>>>>> Stashed changes
 }
 public String viewBooks(){
     String dirString = "";
