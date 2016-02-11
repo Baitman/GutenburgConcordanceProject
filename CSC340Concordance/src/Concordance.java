@@ -111,7 +111,12 @@ public class Concordance implements Serializable {
     public HashMap getConcordance() {
         return this.concordance;
     }
-
+    
+    
+    
+    /////////None of the below is needed for implementation///////////////
+    
+    
     /**
      * This method needs to be implemented, simply returns the string passed to
      * it. TODO Implement method.
