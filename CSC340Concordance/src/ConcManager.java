@@ -60,16 +60,24 @@ public class ConcManager{
         return wordRank;
     }
     
-    public String[][] distanceQuery(String word, Integer distance){
+    public String[] distanceQuery(String word, Integer distance, Integer lineNumber){
         
+        int indexOfTargetWordLineNumber =   (((Word)HashTable.get(word.toLowerCase())).getListOfLines()).indexOf(lineNumber);
+        int targetWordNumber = (((Word)HashTable.get(word.toLowerCase())).getWordNumber()).get(indexOfTargetWordLineNumber);
         
-        //returns a 2D array, where each occurence of the word is a separate row
-        //the first colomn in each row is the line number where the word appears
-        //words appear in order as they would in the text
-        /*example
-        line#, word-3, word-2, word-1, word, word+1,word+2,word+3
-        line#, word-3, word-2, word-1, word, word+1, word+2, word+3*/
-        return null;
+        String[] wordArray = new String[((2*distance)+1)];        
+        
+        Set keySet = HashTable.keySet();    
+        
+        for(int i = 0; i < keySet.size(); i++){
+            for(int j=0; j < (((Word)HashTable.get(keySet.toArray()[i].toString())).getWordNumber().size()); j++){                
+                int newWordPos = (((Integer)((Word)HashTable.get(keySet.toArray()[i].toString())).getWordNumber().toArray()[j]) - (targetWordNumber-distance));                
+                if(newWordPos >= 0 && newWordPos < wordArray.length){
+                        wordArray[newWordPos] = keySet.toArray()[i].toString();        
+                }
+            }            
+        }        
+        return wordArray;
     }
     
     public String[] adjacentQuery(String word, Boolean bool){
