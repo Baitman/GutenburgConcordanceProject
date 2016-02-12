@@ -5,6 +5,9 @@
  * 3. Load a concordance locally to memory 
  * 4. Save a concordance into a specified directory
  * 5. View saved books and concordance
+ * 
+ * Ochaun Marshall
+ * 2-12-16
  */
 import java.io.*;
 import java.util.*;
@@ -181,7 +184,4 @@ public static boolean isConc(File c){
 public static boolean isBook(File b){
    return b.isFile() && b.toString().contains("By");
 }
-
-
-
 }
