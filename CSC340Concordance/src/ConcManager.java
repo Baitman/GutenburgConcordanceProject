@@ -1,6 +1,9 @@
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
 
 /*
 *Concordance Manager 
@@ -13,33 +16,37 @@ public class ConcManager{
     }
   
     
-    /*
-    *
-    */
+    
+    //returns an array of lines where the word appears
    public ArrayList<Integer> lineListQuery(String word){
        
-        //need to get rid of duplicate lines
-        return ((Word) HashTable.get(word.toLowerCase())).getListOfLines();
+       
+       ArrayList<Integer> oldLineList = ((Word) HashTable.get(word.toLowerCase())).getListOfLines();
+       ArrayList<Integer> lineList = new ArrayList<Integer>();
+       
+       oldLineList.trimToSize();
+       
+       for (int i =0; i < oldLineList.size(); i ++){
+           if(!lineList.contains(oldLineList.get(i))){
+               lineList.add(oldLineList.get(i));
+           }
+       }
+        return lineList;
     }
     
+    //returns the number of lines that the word appears on
     public Integer numLineListQuery(String word){
-        //need to get rid of duplicate lines
-        ArrayList <Integer> list = ((Word) HashTable.get(word.toLowerCase())).getListOfLines();
-        list.trimToSize();
-        return list.size();
+        return lineListQuery(word).size();
     }
     
+    //returns an integer value of the number of times the word appears
     public Integer appearQuery(String word){             
-        //returns an integer value of the number of times the word appears
         return ((Word) HashTable.get(word.toLowerCase())).getOccurrence();
     }
     
     public Integer rankQuery(String word){     
-        Set keySet = HashTable.keySet();        
-        String[] keyArray = new String[keySet.size()];
-       
-        int wordRank = 1;
-        
+        Set keySet = HashTable.keySet();               
+        int wordRank = 1;        
         for(int i =0; i < keySet.size(); i++){
             if( appearQuery(keySet.toArray()[i].toString()) > appearQuery(word)){   
                 if(keySet.toArray()[i].toString() == word){
