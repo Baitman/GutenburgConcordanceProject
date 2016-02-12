@@ -40,7 +40,6 @@ public class Word implements Serializable {
         }
         
         public void addWordNumber(int wordNumber){
-            System.out.println("Word: "+ string + "\tCount: " + wordNumber);
             listWordNumber.add(wordNumber);
         }
         
