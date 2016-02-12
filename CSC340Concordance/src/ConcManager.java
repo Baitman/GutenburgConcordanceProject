@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -5,20 +6,22 @@ import java.util.Map;
 *Concordance Manager 
 */
 public class ConcManager{
+<<<<<<< HEAD
     private HashMap<String, Integer> HashTable;
     private Object word;
+=======
+    private HashMap<String, Object> HashTable;
+>>>>>>> master
     
     public ConcManager(HashMap<String, Integer> HashTable){
         this.HashTable = HashTable;
     }
-        
-    private void findWordObject(String word){          
-        this.word = HashTable.get(word);
-    }
+  
     
     /*
     *
     */
+<<<<<<< HEAD
 //    public Integer[] lineListQuery(String word){
 //        
 //        findWordObject(word);
@@ -29,12 +32,24 @@ public class ConcManager{
     
     public Integer numLineListQuery(String word){
         return (int)HashTable.get(word);
+=======
+   public ArrayList<Integer> lineListQuery(String word){
+       
+        //need to get rid of duplicate lines
+        return ((Word) HashTable.get(word.toLowerCase())).getListOfLines();
     }
     
-    public Integer appearQuery(String word){
-        
+    public Integer numLineListQuery(String word){
+        //need to get rid of duplicate lines
+        ArrayList <Integer> list = ((Word) HashTable.get(word.toLowerCase())).getListOfLines();
+        list.trimToSize();
+        return list.size();
+>>>>>>> master
+    }
+    
+    public Integer appearQuery(String word){             
         //returns an integer value of the number of times the word appears
-        return 0;
+        return ((Word) HashTable.get(word.toLowerCase())).getOccurrence();
     }
     
     public Integer rankQuery(String word){
