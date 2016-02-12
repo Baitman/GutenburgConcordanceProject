@@ -7,12 +7,12 @@ public class Word implements Serializable {
         private String string;
         private int occurrenceCount = 0;   
         private ArrayList<Integer> listOfLines;
-        private ArrayList<Integer> listOfColumns;
+        private ArrayList<Integer> listWordNumber;
                 
         public Word(String s) {
             this.string = s;
             listOfLines = new ArrayList<Integer>();
-            listOfColumns = new ArrayList<Integer>();
+            listWordNumber = new ArrayList<Integer>();
         }
 
         public void setString(String s) {
@@ -39,11 +39,12 @@ public class Word implements Serializable {
             return listOfLines;
         }
         
-        public void addNewColumn(int newCol){
-            listOfColumns.add(newCol);
+        public void addWordNumber(int wordNumber){
+            System.out.println("Word: "+ string + "\tCount: " + wordNumber);
+            listWordNumber.add(wordNumber);
         }
         
-        public ArrayList<Integer> getListOfColumns(){
-            return listOfColumns;
+        public ArrayList<Integer> getWordNumber(){
+            return listWordNumber;
         }      
     }
