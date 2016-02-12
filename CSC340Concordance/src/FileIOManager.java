@@ -105,7 +105,11 @@ public class FileIOManager {
 
         String text = "";
         try {
-            File file = new File(currentDirectory.toString() + bookFile);
+            /*
+                File.separator appends a / or \ depending on the OS of the user.
+                the toString() doesn't include either slash at the end.
+            */
+            File file = new File(currentDirectory.toString() + File.separator + bookFile);
             FileReader fileReader
                     = new FileReader(bookFile);
 
@@ -126,6 +130,7 @@ public class FileIOManager {
             ex.printStackTrace();
         } catch (IOException ex) {
             Logger.getLogger(FileIOManager.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
         return text;
 

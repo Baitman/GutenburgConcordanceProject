@@ -53,7 +53,6 @@ public class CommandLine {
                         fileIO = new FileIOManager(userCommand[1]);
                     }
                 }
-                System.out.println("\tDirectory valid?" + ((fileIO.verify())?"Yes":"No"));
                 break;
             case ("findbk"):
                 command = Command.FINDBK;
@@ -78,10 +77,11 @@ public class CommandLine {
             case ("makecs"):
                 command = Command.MAKECS;
                 if (flowStateTransition(command)) {
-                    concordance = new Concordance(fileIO.getText());
+                    concordance = new Concordance(fileIO.loadBook(userCommand[1]));
                     concManager = new ConcManager(concordance.getConcordance());
                     System.out.println("\tDone.");
                 }
+                break;
             case ("savecs"):
                 command = Command.SAVECS;
                 if (flowStateTransition(command)) {
