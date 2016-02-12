@@ -41,6 +41,7 @@ public class Concordance implements Serializable {
         
         textArr = textFileString.split(" ");
         concordance = new HashMap<String, Word>();
+        
         ArrayList<String> duplicateWord = new ArrayList<String>();
         
         /**
@@ -64,30 +65,37 @@ public class Concordance implements Serializable {
             }
         }
         
-        int i = 0;
+        
+        int lineCount = 0;
+        int columnCount = 0;
         String cleanString;
-        for(String item : textArr){        
-            
-            
+        for(String item : textArr){         
             if(item.equals("|")){
-                i++;
+                lineCount++;
+                columnCount=0;
             }            
             //Start at the end of preamble
-            if(i < preambleLine)
+            if(lineCount < preambleLine){
                 continue;
+            }
             
             
             //break loop at the start of the ending preamble
             if(item.equals("***")){
                 break;
             }
-            
+                        
             cleanString = item.replaceAll("[^a-zA-Z]", "").toLowerCase();   
             
+            if(cleanString.equals("")){
+                continue;
+            }
             
             if(duplicateWord.contains(cleanString)){
                 ((Word)concordance.get(cleanString)).incOccurrence();
-                ((Word)concordance.get(cleanString)).addNewLine(i);
+                ((Word)concordance.get(cleanString)).addNewLine(lineCount);
+                ((Word)concordance.get(cleanString)).addNewColumn(columnCount);
+                columnCount++;
             }
             else if(cleanString == null){
                 break;
@@ -97,9 +105,10 @@ public class Concordance implements Serializable {
                 concordance.put(cleanString, newWord);
                 duplicateWord.add(cleanString);
                 ((Word)concordance.get(cleanString)).incOccurrence();
-                ((Word)concordance.get(cleanString)).addNewLine(i);
+                ((Word)concordance.get(cleanString)).addNewLine(lineCount);
+                ((Word)concordance.get(cleanString)).addNewColumn(columnCount);
+                columnCount++;
             }
-            
         }       
     }
 
@@ -112,11 +121,6 @@ public class Concordance implements Serializable {
         return this.concordance;
     }
 }
-    
-    
-    /////////None of the below is needed for implementation///////////////
-    
-    
     /**
      * This method needs to be implemented, simply returns the string passed to
      * it. TODO Implement method.
