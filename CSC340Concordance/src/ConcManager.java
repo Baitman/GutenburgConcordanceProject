@@ -34,10 +34,23 @@ public class ConcManager{
         return ((Word) HashTable.get(word.toLowerCase())).getOccurrence();
     }
     
-    public Integer rankQuery(String word){
+    public Integer rankQuery(String word){     
+        Set keySet = HashTable.keySet();        
+        String[] keyArray = new String[keySet.size()];
+       
+        int wordRank = 1;
+        
+        for(int i =0; i < keySet.size(); i++){
+            if( appearQuery(keySet.toArray()[i].toString()) > appearQuery(word)){   
+                if(keySet.toArray()[i].toString() == word){
+                    continue;
+                }
+                wordRank++;
+            }               
+        }
         
         //returns an integer value for the rank of the word
-        return 0;
+        return wordRank;
     }
     
     public String[][] distanceQuery(String word, Integer distance){
