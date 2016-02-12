@@ -91,13 +91,20 @@ public class CommandLine {
             case ("qline"):
                 command = Command.QLINE;
                 if (flowStateTransition(command)) {
-                    //perform command here
+                    ArrayList<Integer> arrList = concManager.lineListQuery(userCommand[1]);                                       
+                    System.out.print("\tLine numbers where " + userCommand[1] + " appears: ");
+                   
+                    for( int i =0; i < arrList.size()-1; i++){
+                        System.out.print(arrList.get(i) + ", ");
+                    }                           
+                    System.out.println(arrList.get(arrList.size()));
                 }
                 break;
             case ("qnline"):
                 command = Command.QNLINE;
                 if (flowStateTransition(command)) {
-                    //perform command here
+                    int lineCount = concManager.numLineListQuery(userCommand[1]);  
+                    System.out.println("\t" + userCommand[1] + " appears on " + lineCount + " line(s)");
                 }
                 break;
             case ("qappr"):
@@ -110,13 +117,21 @@ public class CommandLine {
             case ("qrank"):
                 command = Command.QRANK;
                 if (flowStateTransition(command)) {
-                    //perform command here
+                    int rank = concManager.rankQuery(userCommand[1]);
+                    System.out.println("\tRank: " + rank);
                 }
                 break;
             case ("qdist"):
                 command = Command.QDIST;
                 if (flowStateTransition(command)) {
-                    //perform command here
+                    String[] wordArray = concManager.distanceQuery("produced", 3, 27);
+                               
+                    for(int i =0; i < wordArray.length-1; i++){
+                       if(wordArray[i] ==null)
+                           continue;
+                       System.out.print(wordArray[i] + " ");
+                    }
+                    System.out.println(wordArray[wordArray.length]);
                 }
                 break;
             case ("qadj"):
