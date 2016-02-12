@@ -1,81 +1,205 @@
-
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-
-
 /**
- * "Title" was changed to "Concordance"
- * 
+ * Concordance class.
+ *
+ * @author Charles Mayse
  */
-public class Concordance implements Serializable{
-    private HashMap concordance;
-    private Map concordanceMap;
-    private String[] textArr;
-    
-   public Concordance(String textFileString){
-       textFileString = removePreamble(textFileString);
-       textArr = textFileString.split(" ");
-       
-       for(String item : textArr){
-           if(!concordanceMap.containsKey(item)){
-               concordanceMap.put(item, 0);
-           }
-           else{
-               int i = (int)concordanceMap.get(item);
-               concordanceMap.replace(item, ++i);
-           }
-       }
-       
-       concordance = new HashMap(concordanceMap);
-   }
-    
-   /**
-    * This method needs to be implemented, simply returns the string passed
-    * to it.
-    * TODO Implement method.
-    * @param s Text to remove preamble.
-    * @return 
-    */
-    private String removePreamble(String s){
-        return s;
-    }
-    
+public class Concordance implements Serializable {
 
-    
-    
-    private class Word implements Serializable{
-        private String string;
+    /**
+     * Fields
+     *
+     * concordance - HashMap, holds the hashmap concordanceMap - Map, creates
+     * the initial mapping of key-value pairs textArr - String[] holds the words
+     * to turn into keys.
+     */
+    private HashMap concordance;
+    private String[] textArr;
+
+    /**
+     * Constructor for Concordance class - creates HashMap after receiving a
+     * string, the hash only represents (word,wordCount).
+     *
+     * TODO This needs updating for line counts and detecting unnecessary words
+     * and characters.
+     *
+     * @param textFileString the string representation of a Gutenberg book
+     */
+    public Concordance(String textFileString) {
+        /**
+         * Each word will be placed into an element of the string array, textArr
+         * Using the fact that each word is separated by a space, the space
+         * character will be used as a delimiter.
+         *
+         */
         
-        public Word(String s){
-            this.string = s;
+        textArr = textFileString.split(" ");
+        concordance = new HashMap<String, Word>();
+        ArrayList<String> duplicateWord = new ArrayList<String>();
+        
+        /**
+         * For each item in the textArr, the concordance map will be checked to
+         * make sure that there isn't already a key-value pair for that word. If
+         * the word hasn't been made into a key-value pair, then initialize a
+         * key-value pair to (word,1). If there is a key-value pair already,
+         * replace the key-value pair with (word,++wordCount).
+         */
+              
+        //Find the end of the preamble
+        //Keep track of the line number
+        int preambleLine = 1;
+        for(String preambleString : textArr){
+            if(preambleString.equals("***")){
+                preambleLine++;
+                break;
+            }
+            else if(preambleString.equals("|")){
+                preambleLine++;
+            }
         }
         
-        public void setString(String s){
-            this.string = s;
-        }
-        
-        public String getString(){
-            return this.string;
-        }
+        int i = 0;
+        String cleanString;
+        for(String item : textArr){        
+            
+            
+            if(item.equals("|")){
+                i++;
+            }            
+            //Start at the end of preamble
+            if(i < preambleLine)
+                continue;
+            
+            
+            //break loop at the start of the ending preamble
+            if(item.equals("***")){
+                break;
+            }
+            
+            cleanString = item.replaceAll("[^a-zA-Z]", "").toLowerCase();   
+            
+            
+            if(duplicateWord.contains(cleanString)){
+                ((Word)concordance.get(cleanString)).incOccurrence();
+                ((Word)concordance.get(cleanString)).addNewLine(i);
+            }
+            else if(cleanString == null){
+                break;
+            }
+            else{  
+                Word newWord = new Word(cleanString);
+                concordance.put(cleanString, newWord);
+                duplicateWord.add(cleanString);
+                ((Word)concordance.get(cleanString)).incOccurrence();
+                ((Word)concordance.get(cleanString)).addNewLine(i);
+            }
+            
+        }       
     }
-    
-    private class Line implements Serializable{
-        private int location;
-        
-        public void setLine(int i){
-            this.location = i;
-        }
-        
-        public int getLine(){
-            return this.location;
-        }
+
+    /**
+     * Returns the concordance hashmap
+     *
+     * @return the hashmap (word,objectWord).
+     */
+    public HashMap getConcordance() {
+        return this.concordance;
     }
 }
     
+    
+    /////////None of the below is needed for implementation///////////////
+    
+    
+    /**
+     * This method needs to be implemented, simply returns the string passed to
+     * it. TODO Implement method.
+     *
+     * @param s Text to remove preamble.
+     * @return
+     */
+   /* private Integer lineStartOfPreamble(String[] s) {
+        int i =0;
+        
+        for(String item : s){
+            if(item.equals("***"))
+            {
+                i++;
+                break;
+            }
+            i++;
+        }
+        
+        return i;
+    }*/
+
+    /**
+     * This method will be used for future implementations of concordance
+     * 
+     * This is the word Object class to be used in the HashMap
+     * It will hold the string word, number of occurrences of the word, 
+     * and the lines the word appears on
+     */
+    /*public class Word implements Serializable {
+
+        private String string;
+        private int occurrenceCount = 0;   
+        private ArrayList<Integer> listOfLines = new ArrayList<Integer>();
+                
+        public Word(String s) {
+            this.string = s;
+        }
+
+        public void setString(String s) {
+            this.string = s;
+        }
+
+        public String getString() {
+            return this.string;
+        }
+        
+        public void incOccurrence(){
+            occurrenceCount++;
+           // System.out.println("String: " + getString() + " Occurrence: " + occurrenceCount);
+        }
+        
+        public Integer getOccurrence(){
+            return occurrenceCount;
+        }
+        
+        public void addNewLine(int newLine){
+            listOfLines.add(newLine);
+        }
+        
+        public ArrayList<Integer> getListOfLines(){
+            return listOfLines;
+        }
+    }
+
+    /**
+     * This method will be used for future implementations of concordance
+     */
+    /*private class Line implements Serializable {
+
+        private int location;
+
+        public void setLine(int i) {
+            this.location = i;
+        }
+
+        public int getLine() {
+            return this.location;
+        }
+    }
+}*/
+    
+//<editor-fold>
 //    /**
 //     * This main needs to be deleted
 //     * @param args 
@@ -216,4 +340,4 @@ public class Concordance implements Serializable{
 //        else return 0;
 //    }
 //}
-//    
+//</editor-fold>    
