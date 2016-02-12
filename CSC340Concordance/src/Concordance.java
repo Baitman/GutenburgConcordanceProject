@@ -67,12 +67,11 @@ public class Concordance implements Serializable {
         
         
         int lineCount = 0;
-        int columnCount = 0;
+        int wordCount =0;
         String cleanString;
         for(String item : textArr){         
             if(item.equals("|")){
                 lineCount++;
-                columnCount=0;
             }            
             //Start at the end of preamble
             if(lineCount < preambleLine){
@@ -94,8 +93,8 @@ public class Concordance implements Serializable {
             if(duplicateWord.contains(cleanString)){
                 ((Word)concordance.get(cleanString)).incOccurrence();
                 ((Word)concordance.get(cleanString)).addNewLine(lineCount);
-                ((Word)concordance.get(cleanString)).addNewColumn(columnCount);
-                columnCount++;
+                ((Word)concordance.get(cleanString)).addWordNumber(wordCount);
+                wordCount++;
             }
             else if(cleanString == null){
                 break;
@@ -106,8 +105,8 @@ public class Concordance implements Serializable {
                 duplicateWord.add(cleanString);
                 ((Word)concordance.get(cleanString)).incOccurrence();
                 ((Word)concordance.get(cleanString)).addNewLine(lineCount);
-                ((Word)concordance.get(cleanString)).addNewColumn(columnCount);
-                columnCount++;
+                ((Word)concordance.get(cleanString)).addWordNumber(wordCount);
+                wordCount++;
             }
         }       
     }
