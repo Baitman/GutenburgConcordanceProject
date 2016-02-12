@@ -1,25 +1,40 @@
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
 import java.util.Set;
 
-/*
-*Concordance Manager 
-*/
+/**
+ * Concordance Manager class
+ * 
+ * @author Matt
+ */
 public class ConcManager{
+    /**
+     * Fields
+     * 
+     * HashMap<String, Object> HashTable - Holds the mappings for the current concordance
+     */
     private HashMap<String, Object> HashTable;
     
-    public ConcManager(HashMap<String, Object> HashTable){
+    /**
+     * Constructor for ConcManager
+     * 
+     * Sets HashTable equal to the parameter
+     * @param HashTable 
+     */    
+    public ConcManager(HashMap<String, Object> HashTable){        
         this.HashTable = HashTable;
     }
   
     
-    
-    //returns an array of lines where the word appears
-   public ArrayList<Integer> lineListQuery(String word){
-       
+    /**
+     * Method to return a list of line numbers on which the given word appears on
+     * If the given word appears on the same line twice, then only one occurrence appears
+     * in the list
+     * 
+     * @param word The word being queried
+     * @return  an ArrayList<Integer> of exact size with line numbers appearing in ascending order
+     */
+   public ArrayList<Integer> lineListQuery(String word){      
        
        ArrayList<Integer> oldLineList = ((Word) HashTable.get(word.toLowerCase())).getListOfLines();
        ArrayList<Integer> lineList = new ArrayList<Integer>();
@@ -34,16 +49,41 @@ public class ConcManager{
         return lineList;
     }
     
-    //returns the number of lines that the word appears on
+    /**
+     * Method to return the number of lines on which the given word appears on
+     * If the given word appears on the same line twice, then the line is only counted a single time
+     * 
+     * @param word The word being queried
+     * @return an integer value for the number of lines
+     */
     public Integer numLineListQuery(String word){
         return lineListQuery(word).size();
     }
     
-    //returns an integer value of the number of times the word appears
+    /**
+     * Method to return the number of occurrences of the given word
+     * 
+     * @param word The word being queried 
+     * @return an integer value for the number of occurrences of the word
+     */
     public Integer appearQuery(String word){             
         return ((Word) HashTable.get(word.toLowerCase())).getOccurrence();
     }
     
+    /**
+     * Method to return the rank (based on occurrences) of the given word with respect
+     * other word in the concordance
+     * 
+     * The method uses a keySet of the HashTable field to obtain every string in the concurrence
+     * The number of occurrences of the given word is compared to the number of occurrences of
+     * every other word in the concordance
+     * For every word with a higher occurrence, the rank of the word is incremented
+     * 
+     * Ranking starts at 1, with the word that has the highest number of occurrences
+     * 
+     * @param word The word being queried
+     * @return 
+     */
     public Integer rankQuery(String word){     
         Set keySet = HashTable.keySet();               
         int wordRank = 1;        
@@ -54,20 +94,49 @@ public class ConcManager{
                 }
                 wordRank++;
             }               
-        }
-        
-        //returns an integer value for the rank of the word
+        }        
         return wordRank;
     }
     
+    /**
+     * Method to return a list of words that are within a given distance of the target word
+     * The target word is specified by a string value and a specific line number that the word appears on
+     * 
+     * 
+     * @param word The word being queried
+     * @param distance The distance from the target word (exclusive) in both directions
+     * @param lineNumber The line number that the target word appears on, if the target word appears
+     *                    multiple times on the line, then only the first occurrence is used as the target word
+     * 
+     * @return Returns a String[] of the words found within the distance of the target word
+     *          The words appears as they would in the text, with the target word always in the middle of the array
+     */
     public String[] distanceQuery(String word, Integer distance, Integer lineNumber){
-        
+        /**
+         * Find the word's word number based on the given line number
+         * Because of how they are stored in the word Object, the indexes of the list of lines 
+         * correspond directly to the index of that word's word number
+         * 
+         * idexOfTargetWordLineNumber finds the target line for the target word
+         * targetWordNumber finds the corresponding word number for that target line
+         * 
+         * String[] wordArray is created to store the words found, it will always be the size of (2*distance)+1
+         * 
+         * A keySet of the HashTable is created to find all of the string values in the concordance
+         */               
         int indexOfTargetWordLineNumber =   (((Word)HashTable.get(word.toLowerCase())).getListOfLines()).indexOf(lineNumber);
-        int targetWordNumber = (((Word)HashTable.get(word.toLowerCase())).getWordNumber()).get(indexOfTargetWordLineNumber);
+        int targetWordNumber = (((Word)HashTable.get(word.toLowerCase())).getWordNumber()).get(indexOfTargetWordLineNumber);        
         
         String[] wordArray = new String[((2*distance)+1)];        
         
         Set keySet = HashTable.keySet();    
+        
+        /**
+         * The outer for loop iterates over the keySet (over the string values in the concordance)
+         * 
+         * For each string value in the keySet, the inner for loop checks each of the word's word numbers
+         * They are added to the wordArray if they are within the given distance from the target word
+         */
         
         for(int i = 0; i < keySet.size(); i++){
             for(int j=0; j < (((Word)HashTable.get(keySet.toArray()[i].toString())).getWordNumber().size()); j++){                
