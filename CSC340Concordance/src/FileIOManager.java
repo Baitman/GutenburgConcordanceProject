@@ -141,7 +141,7 @@ public class FileIOManager {
         File[] dirlist = currentDirectory.listFiles();
         for (int i = 0; i < dirlist.length; i++) {
             if (dirlist[i].isFile()) {
-                dirString += dirlist[i].getName();
+                dirString += "\t"+dirlist[i].getName()+"\n";
             }
         }
         return dirString;
@@ -154,7 +154,7 @@ public class FileIOManager {
         File[] dirlist = dir.listFiles();
         for (int i = 0; i < dirlist.length; i++) {
             if (dirlist[i].isFile()) {
-                dirString += dirlist[i].getName();
+                dirString += "\t"+dirlist[i].getName()+"\n";
             }
         }
 
@@ -166,7 +166,7 @@ public class FileIOManager {
         File[] dirlist = currentDirectory.listFiles();
         for (int i = 0; i < dirlist.length; i++) {
             if (dirlist[i].isFile()) {
-                dirString += dirlist[i].getName();
+                dirString += "\t"+dirlist[i].getName()+"\n";
             }
         }
         return dirString;
@@ -178,7 +178,7 @@ public class FileIOManager {
         File[] dirlist = dir.listFiles();
         for (int i = 0; i < dirlist.length; i++) {
             if (dirlist[i].isFile()) {
-                dirString += dirlist[i].getName();
+                dirString += "\t"+dirlist[i].getName()+"\n";
             }
         }
 

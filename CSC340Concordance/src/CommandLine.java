@@ -85,44 +85,50 @@ public class CommandLine {
             case ("savecs"):
                 command = Command.SAVECS;
                 if (flowStateTransition(command)) {
+                    System.out.println("\tSaved.");
                     fileIO.saveConc(concordance);
                 }
                 break;
             case ("qline"):
                 command = Command.QLINE;
                 if (flowStateTransition(command)) {
-                    //perform command here
+                    System.out.println("\tThe lines in which " + userCommand[1] + " appears");
+                    System.out.println("\t"+concManager.lineListQuery(userCommand[1]).toString());
                 }
                 break;
             case ("qnline"):
                 command = Command.QNLINE;
                 if (flowStateTransition(command)) {
-                    //perform command here
+                    System.out.println("\tNumber of lines " + userCommand[1] + " appears");
+                    System.out.println("\t"+concManager.numLineListQuery(userCommand[1]).toString());
                 }
                 break;
             case ("qappr"):
                 command = Command.QAPPR;
                 if (flowStateTransition(command)) {
-                    int wordCount = concManager.numLineListQuery(userCommand[1]);
+                    int wordCount = concManager.appearQuery(userCommand[1]);
                     System.out.println("\t"+userCommand[1] + " appears " + wordCount + ((wordCount == 1) ? " time" : " times"));
                 }
                 break;
             case ("qrank"):
                 command = Command.QRANK;
                 if (flowStateTransition(command)) {
-                    //perform command here
+                    System.out.println("\t"+userCommand[1]+" rank:");
+                    System.out.println("\t"+concManager.rankQuery(userCommand[1]));
                 }
                 break;
             case ("qdist"):
                 command = Command.QDIST;
                 if (flowStateTransition(command)) {
-                    //perform command here
+                    System.out.println("\tNumber of words that appear " + userCommand[2] + "line(s) away from " + userCommand[1]);
+                    System.out.println("\t" + concManager.distanceQuery(userCommand[1],Integer.parseInt(userCommand[2])));
                 }
                 break;
             case ("qadj"):
                 command = Command.QADJ;
                 if (flowStateTransition(command)) {
-                    //perform command here
+                    System.out.println("\tAdjacency: ");
+                    System.out.println(concManager.adjacentQuery(userCommand[1], Boolean.TRUE));
                 }
                 break;
             case ("exit"):
