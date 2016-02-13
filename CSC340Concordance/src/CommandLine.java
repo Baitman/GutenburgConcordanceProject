@@ -1,4 +1,6 @@
 
+import java.util.ArrayList;
+
 public class CommandLine {
 
     /**
@@ -53,6 +55,7 @@ public class CommandLine {
                         fileIO = new FileIOManager(userCommand[1]);
                     }
                 }
+                System.out.println("\tDirectory valid?" + ((fileIO.verify())?"Yes":"No"));
                 break;
             case ("findbk"):
                 command = Command.FINDBK;
@@ -77,11 +80,10 @@ public class CommandLine {
             case ("makecs"):
                 command = Command.MAKECS;
                 if (flowStateTransition(command)) {
-                    concordance = new Concordance(fileIO.loadBook(userCommand[1]));
+                    concordance = new Concordance(fileIO.getText());
                     concManager = new ConcManager(concordance.getConcordance());
                     System.out.println("\tDone.");
                 }
-                break;
             case ("savecs"):
                 command = Command.SAVECS;
                 if (flowStateTransition(command)) {
@@ -91,26 +93,34 @@ public class CommandLine {
             case ("qline"):
                 command = Command.QLINE;
                 if (flowStateTransition(command)) {
-                    ArrayList<Integer> arrList = concManager.lineListQuery(userCommand[1]);                                       
-                    System.out.print("\tLine numbers where " + userCommand[1] + " appears: ");
-                   
-                    for( int i =0; i < arrList.size()-1; i++){
-                        System.out.print(arrList.get(i) + ", ");
-                    }                           
-                    System.out.println(arrList.get(arrList.size()));
+                    ArrayList<Integer> arrList = concManager.lineListQuery(userCommand[1]);      
+                    if(arrList == null){
+                        System.out.println("\t" + userCommand[1] + " does not appear in the concordance.");
+                    }else{
+                        System.out.print("\tLine numbers where " + userCommand[1] + " appears: ");                
+
+                        for( int i =0; i < arrList.size(); i++){
+                            System.out.print(arrList.get(i) + ", ");
+                        }                           
+                        System.out.println();
+                    }
                 }
                 break;
             case ("qnline"):
                 command = Command.QNLINE;
                 if (flowStateTransition(command)) {
                     int lineCount = concManager.numLineListQuery(userCommand[1]);  
+                    if(lineCount ==0){
+                        System.out.println("\t" + userCommand[1] + " does not appear in the concordance.");
+                    }else{
                     System.out.println("\t" + userCommand[1] + " appears on " + lineCount + " line(s)");
+                    }
                 }
                 break;
             case ("qappr"):
                 command = Command.QAPPR;
                 if (flowStateTransition(command)) {
-                    int wordCount = concManager.numLineListQuery(userCommand[1]);
+                    int wordCount = concManager.appearQuery(userCommand[1]);
                     System.out.println("\t"+userCommand[1] + " appears " + wordCount + ((wordCount == 1) ? " time" : " times"));
                 }
                 break;
@@ -118,20 +128,24 @@ public class CommandLine {
                 command = Command.QRANK;
                 if (flowStateTransition(command)) {
                     int rank = concManager.rankQuery(userCommand[1]);
-                    System.out.println("\tRank: " + rank);
+                    if(rank ==0){
+                        System.out.println("\t" + userCommand[1] + " does not appear in the concordance.");
+                    }else{
+                        System.out.println("\tRank: " + rank);
+                    }
                 }
                 break;
             case ("qdist"):
                 command = Command.QDIST;
                 if (flowStateTransition(command)) {
-                    String[] wordArray = concManager.distanceQuery("produced", 3, 27);
+                   String[] wordArray = concManager.distanceQuery("produced", 3, 27);
                                
-                    for(int i =0; i < wordArray.length-1; i++){
+                   for(int i =0; i < wordArray.length; i++){
                        if(wordArray[i] ==null)
                            continue;
                        System.out.print(wordArray[i] + " ");
-                    }
-                    System.out.println(wordArray[wordArray.length]);
+                   }
+                    System.out.println();
                 }
                 break;
             case ("qadj"):
