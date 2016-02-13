@@ -17,18 +17,13 @@ public class Program {
      */
     public static void main(String[] args) {
         
-        /**
-         * Required object references
-         */
-        FileIOManager fileIO = null;
-        ConcManager concManager = null;
+        CommandLine cLine = new CommandLine();
 
         /**
          * String and String array used to hold user input
          */
         String input;
         String[] inputArr;
-        CommandLine cLine = new CommandLine();
 
         /**
          * Welcome prompt.
