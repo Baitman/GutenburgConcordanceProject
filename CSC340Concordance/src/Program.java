@@ -2,6 +2,8 @@
  * This is main java file for the Concordance program. Contains Main().
  * @author Charles Mayse
  * 2/9/16
+ * 
+ * Delivered 2/12/16 for first use-case
  */
 
 /**
