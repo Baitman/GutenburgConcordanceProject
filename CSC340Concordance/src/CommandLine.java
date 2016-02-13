@@ -84,6 +84,7 @@ public class CommandLine {
                     concManager = new ConcManager(concordance.getConcordance());
                     System.out.println("\tDone.");
                 }
+                break;
             case ("savecs"):
                 command = Command.SAVECS;
                 if (flowStateTransition(command)) {
