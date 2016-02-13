@@ -35,7 +35,10 @@ public class ConcManager{
      * @return  an ArrayList<Integer> of exact size with line numbers appearing in ascending order
      */
    public ArrayList<Integer> lineListQuery(String word){      
-       
+       Set keySet = HashTable.keySet();
+        if (!keySet.contains(word)){
+            return null;
+        }
        ArrayList<Integer> oldLineList = ((Word) HashTable.get(word.toLowerCase())).getListOfLines();
        ArrayList<Integer> lineList = new ArrayList<Integer>();
        
@@ -57,6 +60,10 @@ public class ConcManager{
      * @return an integer value for the number of lines
      */
     public Integer numLineListQuery(String word){
+        Set keySet = HashTable.keySet();
+        if (!keySet.contains(word)){
+            return 0;
+        }
         return lineListQuery(word).size();
     }
     
@@ -67,6 +74,10 @@ public class ConcManager{
      * @return an integer value for the number of occurrences of the word
      */
     public Integer appearQuery(String word){             
+        Set keySet = HashTable.keySet();
+        if (!keySet.contains(word)){
+            return 0;
+        }
         return ((Word) HashTable.get(word.toLowerCase())).getOccurrence();
     }
     
@@ -85,7 +96,10 @@ public class ConcManager{
      * @return 
      */
     public Integer rankQuery(String word){     
-        Set keySet = HashTable.keySet();               
+        Set keySet = HashTable.keySet();    
+        if(!keySet.contains(word)){
+            return 0;
+        }
         int wordRank = 1;        
         for(int i =0; i < keySet.size(); i++){
             if( appearQuery(keySet.toArray()[i].toString()) > appearQuery(word)){   
