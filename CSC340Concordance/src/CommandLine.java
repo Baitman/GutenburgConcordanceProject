@@ -1,3 +1,9 @@
+/**
+ * CommandLine interface.
+ * 
+ * @author Charles Mayse
+ */
+
 
 import java.util.ArrayList;
 
