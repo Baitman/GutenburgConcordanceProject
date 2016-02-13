@@ -12,7 +12,7 @@ public class Title {
 
     }
 
-    public void addTitle(TitleElement curr, String title) {
+    public void addTitle(TitleElement curr, String title) throws FileNotFoundException {
         curr.setNext(curr);
         curr = curr.getNext();
         curr.setTitle(title);
