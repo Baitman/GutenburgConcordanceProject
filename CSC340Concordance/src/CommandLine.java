@@ -46,10 +46,14 @@ public class CommandLine {
     /**
      * Changes the current command and checks it against the program flow.
      *
-     * @param userCommand is the command in inputArr[0] that the user entered
+     * @param userCommand is the command in inputArr[0] that the user entered, inputArr[1] and inputArr[2] 
+     * are also used for input
      */
     public void setCommand(String[] userCommand) {
         switch (userCommand[0]) {
+            /**
+             * Sets the directory
+             */
             case ("setdir"):
                 command = Command.SETDIR;
                 if (flowStateTransition(command)) {
@@ -63,18 +67,28 @@ public class CommandLine {
                 }
                 System.out.println("\tDirectory valid?" + ((fileIO.verify())?"Yes":"No"));
                 break;
+            /**
+             * Finds a book on Gutenberg.org, however for this implementation, it will
+             * simply display the contents of the directory
+             */
             case ("findbk"):
                 command = Command.FINDBK;
                 if(flowStateTransition(command)){
                 System.out.println(fileIO.viewBooks());
                 }
                 break;
+            /**
+             * Lists the contents of the directory
+             */
             case ("listbk"):
                 command = Command.LISTBK;
                 if (flowStateTransition(command)) {
                     System.out.println(fileIO.viewBooks());
                 }
                 break;
+            /**
+             * Loads the book into the program
+             */
             case ("loadbk"):
                 command = Command.LOADBK;
                 if (flowStateTransition(command)) {
@@ -83,6 +97,9 @@ public class CommandLine {
                     System.out.println("\tLoaded.");
                 }
                 break;
+            /**
+             * Initiates and makes the concordance
+             */
             case ("makecs"):
                 command = Command.MAKECS;
                 if (flowStateTransition(command)) {
@@ -90,6 +107,9 @@ public class CommandLine {
                     concManager = new ConcManager(concordance.getConcordance());
                     System.out.println("\tDone.");
                 }
+            /**
+             * Saves the concordance
+             */
                 break;
             case ("savecs"):
                 command = Command.SAVECS;
@@ -98,16 +118,19 @@ public class CommandLine {
                     fileIO.saveConc(concordance);
                 }
                 break;
+            /**
+             * Shows which line the target word appears
+             */
             case ("qline"):
                 command = Command.QLINE;
                 if (flowStateTransition(command)) {
-                    System.out.println("\tThe lines in which " + userCommand[1] + " appears");
-                    System.out.println("\t"+concManager.lineListQuery(userCommand[1]).toString());
-                    ArrayList<Integer> arrList = concManager.lineListQuery(userCommand[1]);      
+                    System.out.println("\tThe lines in which " + userCommand[1].toLowerCase() + " appears");
+                    System.out.println("\t"+concManager.lineListQuery(userCommand[1].toLowerCase()).toString());
+                    ArrayList<Integer> arrList = concManager.lineListQuery(userCommand[1].toLowerCase());      
                     if(arrList == null){
-                        System.out.println("\t" + userCommand[1] + " does not appear in the concordance.");
+                        System.out.println("\t" + userCommand[1].toLowerCase() + " does not appear in the concordance.");
                     }else{
-                        System.out.print("\tLine numbers where " + userCommand[1] + " appears: ");                
+                        System.out.print("\tLine numbers where " + userCommand[1].toLowerCase() + " appears: ");                
 
                         for( int i =0; i < arrList.size(); i++){
                             System.out.print(arrList.get(i) + ", ");
@@ -116,46 +139,57 @@ public class CommandLine {
                     }
                 }
                 break;
+           /**
+            * Shows the number of lines a target word appears in a concordance
+            */
             case ("qnline"):
                 command = Command.QNLINE;
                 if (flowStateTransition(command)) {
-                    System.out.println("\tNumber of lines " + userCommand[1] + " appears");
-                    System.out.println("\t"+concManager.numLineListQuery(userCommand[1]).toString());
-                    int lineCount = concManager.numLineListQuery(userCommand[1]);  
+                    System.out.println("\tNumber of lines " + userCommand[1].toLowerCase() + " appears");
+                    System.out.println("\t"+concManager.numLineListQuery(userCommand[1]).toString().toLowerCase());
+                    int lineCount = concManager.numLineListQuery(userCommand[1].toLowerCase());  
                     if(lineCount ==0){
-                        System.out.println("\t" + userCommand[1] + " does not appear in the concordance.");
+                        System.out.println("\t" + userCommand[1].toLowerCase() + " does not appear in the concordance.");
                     }else{
-                    System.out.println("\t" + userCommand[1] + " appears on " + lineCount + " line(s)");
+                    System.out.println("\t" + userCommand[1].toLowerCase() + " appears on " + lineCount + " line(s)");
                     }
                 }
                 break;
+            /**
+             * Shows the number of times a word appears in a concordance
+             */
             case ("qappr"):
                 command = Command.QAPPR;
                 if (flowStateTransition(command)) {
-                    int wordCount = concManager.appearQuery(userCommand[1]);
-                    System.out.println("\t"+userCommand[1] + " appears " + wordCount + ((wordCount == 1) ? " time" : " times"));
+                    int wordCount = concManager.appearQuery(userCommand[1].toLowerCase());
+                    System.out.println("\t" + userCommand[1].toLowerCase() + " appears " + wordCount + ((wordCount == 1) ? " time" : " times"));
                 }
                 break;
+            /**
+             * Shows target word rank
+             */
             case ("qrank"):
                 command = Command.QRANK;
                 if (flowStateTransition(command)) {
-
-                    System.out.println("\t"+userCommand[1]+" rank:");
-                    System.out.println("\t"+concManager.rankQuery(userCommand[1]));
-                    int rank = concManager.rankQuery(userCommand[1]);
+                    System.out.print("\t"+userCommand[1].toLowerCase()+" rank:");
+                    System.out.println(" "+concManager.rankQuery(userCommand[1].toLowerCase()));
+                    int rank = concManager.rankQuery(userCommand[1].toLowerCase());
                     if(rank ==0){
-                        System.out.println("\t" + userCommand[1] + " does not appear in the concordance.");
+                        System.out.println("\t" + userCommand[1].toLowerCase() + " does not appear in the concordance.");
                     }else{
                         System.out.println("\tRank: " + rank);
                     }
                 }
                 break;
+            /**
+             * Shows the number of words that appear within a line distance of a target word
+             */
             case ("qdist"):
                 command = Command.QDIST;
                 if (flowStateTransition(command)) {
 
-                    System.out.println("\tNumber of words that appear " + userCommand[2] + "line(s) away from " + userCommand[1]);
-                    System.out.println("\t" + concManager.distanceQuery(userCommand[1],Integer.parseInt(userCommand[2]),Integer.parseInt(userCommand[3])));
+                    System.out.println("\tNumber of words that appear " + userCommand[2] + "line(s) away from " + userCommand[1].toLowerCase());
+                    System.out.println("\t" + concManager.distanceQuery(userCommand[1].toLowerCase(),Integer.parseInt(userCommand[2]),Integer.parseInt(userCommand[3])));
                     String[] wordArray = concManager.distanceQuery("produced", 3, 27);
                                
                    for(int i =0; i < wordArray.length; i++){
@@ -166,13 +200,19 @@ public class CommandLine {
                     System.out.println();
                 }
                 break;
+            /**
+             * Shows the number of words that appear adjacent to a target word
+             */
             case ("qadj"):
                 command = Command.QADJ;
                 if (flowStateTransition(command)) {
                     System.out.println("\tAdjacency: ");
-                    System.out.println(concManager.adjacentQuery(userCommand[1], Boolean.TRUE));
+                    System.out.println(concManager.adjacentQuery(userCommand[1].toLowerCase(), Boolean.TRUE));
                 }
                 break;
+            /**
+             * Exits the program.
+             */
             case ("exit"):
                 command = Command.EXIT;
                 System.exit(0);

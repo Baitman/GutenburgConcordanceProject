@@ -31,7 +31,8 @@ public class Program {
         System.out.println("Welcome to Concordance");
 
         /**
-         * This while loop will continue to run until the user types in 'exit'
+         * This while loop will continue to run, until cLine object closes 
+         * the program.
          */
         while (true) {
 
