@@ -94,10 +94,8 @@ public class CommandLine {
             case ("qline"):
                 command = Command.QLINE;
                 if (flowStateTransition(command)) {
-<<<<<<< HEAD
                     System.out.println("\tThe lines in which " + userCommand[1] + " appears");
                     System.out.println("\t"+concManager.lineListQuery(userCommand[1]).toString());
-=======
                     ArrayList<Integer> arrList = concManager.lineListQuery(userCommand[1]);      
                     if(arrList == null){
                         System.out.println("\t" + userCommand[1] + " does not appear in the concordance.");
@@ -109,23 +107,19 @@ public class CommandLine {
                         }                           
                         System.out.println();
                     }
->>>>>>> origin/master
                 }
                 break;
             case ("qnline"):
                 command = Command.QNLINE;
                 if (flowStateTransition(command)) {
-<<<<<<< HEAD
                     System.out.println("\tNumber of lines " + userCommand[1] + " appears");
                     System.out.println("\t"+concManager.numLineListQuery(userCommand[1]).toString());
-=======
                     int lineCount = concManager.numLineListQuery(userCommand[1]);  
                     if(lineCount ==0){
                         System.out.println("\t" + userCommand[1] + " does not appear in the concordance.");
                     }else{
                     System.out.println("\t" + userCommand[1] + " appears on " + lineCount + " line(s)");
                     }
->>>>>>> origin/master
                 }
                 break;
             case ("qappr"):
@@ -138,27 +132,24 @@ public class CommandLine {
             case ("qrank"):
                 command = Command.QRANK;
                 if (flowStateTransition(command)) {
-<<<<<<< HEAD
+
                     System.out.println("\t"+userCommand[1]+" rank:");
                     System.out.println("\t"+concManager.rankQuery(userCommand[1]));
-=======
                     int rank = concManager.rankQuery(userCommand[1]);
                     if(rank ==0){
                         System.out.println("\t" + userCommand[1] + " does not appear in the concordance.");
                     }else{
                         System.out.println("\tRank: " + rank);
                     }
->>>>>>> origin/master
                 }
                 break;
             case ("qdist"):
                 command = Command.QDIST;
                 if (flowStateTransition(command)) {
-<<<<<<< HEAD
+
                     System.out.println("\tNumber of words that appear " + userCommand[2] + "line(s) away from " + userCommand[1]);
-                    System.out.println("\t" + concManager.distanceQuery(userCommand[1],Integer.parseInt(userCommand[2])));
-=======
-                   String[] wordArray = concManager.distanceQuery("produced", 3, 27);
+                    System.out.println("\t" + concManager.distanceQuery(userCommand[1],Integer.parseInt(userCommand[2]),Integer.parseInt(userCommand[3])));
+                    String[] wordArray = concManager.distanceQuery("produced", 3, 27);
                                
                    for(int i =0; i < wordArray.length; i++){
                        if(wordArray[i] ==null)
@@ -166,7 +157,6 @@ public class CommandLine {
                        System.out.print(wordArray[i] + " ");
                    }
                     System.out.println();
->>>>>>> origin/master
                 }
                 break;
             case ("qadj"):

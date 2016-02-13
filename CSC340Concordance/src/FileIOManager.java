@@ -95,11 +95,7 @@ public class FileIOManager {
         File[] dirlist = currentDirectory.listFiles();
         for (int i = 0; i < dirlist.length; i++) {
             if (dirlist[i].isFile()) {
-<<<<<<< HEAD
                 dirString += "\t"+dirlist[i].getName()+"\n";
-=======
-                dirString += dirlist[i].getName() + "\n";
->>>>>>> origin/master
             }
         }
         return dirString;
