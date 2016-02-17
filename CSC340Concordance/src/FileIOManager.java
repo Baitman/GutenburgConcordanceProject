@@ -30,15 +30,15 @@ public class FileIOManager {
         return currentDirectory.getPath();
     }
 
-    public void saveConc(Concordance con) {
-        Concordance inputcon = con;
+    public void saveConc(Concordance con, String filename) {
+        String inputcon = filename + ".ser";
         //String contitle = ;
 
         FileOutputStream fos;
         ObjectOutputStream oss = null;
 
         try {
-            fos = new FileOutputStream(new File("con.ser"));
+            fos = new FileOutputStream(new File(inputcon));
             oss = new ObjectOutputStream(fos);
         } catch (IOException oops) {
             oops.printStackTrace();
@@ -94,7 +94,7 @@ public class FileIOManager {
         String dirString = "";
         File[] dirlist = currentDirectory.listFiles();
         for (int i = 0; i < dirlist.length; i++) {
-            if (dirlist[i].isFile()) {
+            if (dirlist[i].isFile() && dirlist[i].toString().contains(".txt")) {
                 dirString += "\t"+dirlist[i].getName()+"\n";
             }
         }
@@ -107,7 +107,7 @@ public class FileIOManager {
         File dir = new File(bookDir);
         File[] dirlist = dir.listFiles();
         for (int i = 0; i < dirlist.length; i++) {
-            if (dirlist[i].isFile()) {
+            if (dirlist[i].isFile() && dirlist[i].toString().contains(".txt")) {
                 dirString += "\t"+dirlist[i].getName()+"\n";
             }
         }
@@ -119,7 +119,7 @@ public class FileIOManager {
         String dirString = "";
         File[] dirlist = currentDirectory.listFiles();
         for (int i = 0; i < dirlist.length; i++) {
-            if (dirlist[i].isFile()) {
+            if (dirlist[i].isFile() && dirlist[i].toString().contains(".ser")) {
                 dirString += "\t"+dirlist[i].getName()+"\n";
             }
         }
@@ -131,7 +131,7 @@ public class FileIOManager {
         File dir = new File(conDir);
         File[] dirlist = dir.listFiles();
         for (int i = 0; i < dirlist.length; i++) {
-            if (dirlist[i].isFile()) {
+            if (dirlist[i].isFile() && dirlist[i].toString().contains(".ser")) {
                 dirString += "\t"+dirlist[i].getName()+"\n";
             }
         }
