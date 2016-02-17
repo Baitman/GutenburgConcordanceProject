@@ -46,6 +46,22 @@ public class FileIOManager {
 
     }
 
+        public void saveConc(Concordance con) {
+        //String inputcon = filename + ".ser";
+        //String contitle = ;
+
+        FileOutputStream fos;
+        ObjectOutputStream oss = null;
+
+        try {
+            fos = new FileOutputStream(new File("con.ser"));
+            oss = new ObjectOutputStream(fos);
+        } catch (IOException oops) {
+            oops.printStackTrace();
+        }
+
+    }
+    
     public Concordance loadConc(String condir) {
 
         try {
