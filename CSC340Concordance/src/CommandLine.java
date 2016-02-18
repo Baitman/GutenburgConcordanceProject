@@ -203,11 +203,19 @@ public class CommandLine {
             /**
              * Shows the number of words that appear adjacent to a target word
              */
-            case ("qadj"):
+             case ("qadj"):
                 command = Command.QADJ;
                 if (flowStateTransition(command)) {
-                    System.out.println("\tAdjacency: ");
-                    System.out.println(concManager.adjacentQuery(userCommand[1].toLowerCase(), Boolean.TRUE));
+                    ArrayList<Integer> lines = concManager.adjacentQuery(userCommand[1], userCommand[2]);
+                    if(lines != null){
+                        System.out.print("\tThese words are adjacent on lines: ");
+                        for(int i =0; i < lines.size(); i++){                        
+                            System.out.print(lines.get(i) + ", ");
+                        }
+                        System.out.println("");
+                    }
+                    else
+                        System.out.println("\tOne or more selected word does not appear in the concordance.");
                 }
                 break;
             /**
