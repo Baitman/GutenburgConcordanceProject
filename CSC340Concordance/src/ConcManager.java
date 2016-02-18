@@ -163,9 +163,67 @@ public class ConcManager{
         return wordArray;
     }
     
-    public String[] adjacentQuery(String word, Boolean bool){
+     /**
+     * Method to return a list of line numbers on which the two words are adjacent on
+     * 
+     * 
+     * @param firstWord 
+     * @param secondWord
+     * @return ArrayList<Integer> an array of line numbers
+     */    
+    public ArrayList<Integer> adjacentQuery(String firstWord, String secondWord){
+              
+        /**
+         * Check if words appear in concordance
+         */
+        if(appearQuery(firstWord) == 0 || appearQuery(secondWord) == 0 ){
+            return null;
+        }    
         
-        //not sure how this is going to work yet
-        return null;    
+        /** 
+         * Get array of word counts for first word and second word
+         */
+        ArrayList<Integer> firstArray = ((Word)HashTable.get(firstWord.toLowerCase())).getWordNumber();
+        ArrayList<Integer> secondArray = ((Word)HashTable.get(secondWord.toLowerCase())).getWordNumber();
+        ArrayList<Integer> lineCount = new ArrayList<Integer>();
+              
+        /**
+         * The word with more occurrences needs to used in the loop 
+         * Decision statement to find the word with more occurrences
+         */
+        if(firstArray.size() > secondArray.size()){        
+            /**
+             * Search the first array's values and compare to the second array
+             * check if any value in the first array is within 1 of any value in the second array
+             * Store the line numbers that this occurs on
+             */
+            ArrayList<Integer> firstLineArray = ((Word)HashTable.get(firstWord.toLowerCase())).getListOfLines();
+            for(int i =0; i < firstArray.size(); i++){
+                if(secondArray.contains(firstArray.get(i)-1)){
+                    lineCount.add(firstLineArray.get(i));
+                }
+                else if (secondArray.contains(firstArray.get(i)+1)){
+                    lineCount.add(firstLineArray.get(i));
+                }
+            }        
+        }
+        else{
+            /**
+             * Search the second array's values and compare to the first array
+             * check if any value in the second array is within 1 of any value in the first array
+             * Store the line numbers that this occurs on
+             */
+            ArrayList<Integer> secondLineArray = ((Word)HashTable.get(secondWord.toLowerCase())).getListOfLines();
+             for(int i =0; i < secondArray.size(); i++){
+                if(firstArray.contains(secondArray.get(i)-1)){
+                    lineCount.add(secondLineArray.get(i));
+
+                }
+                else if (firstArray.contains(secondArray.get(i)+1)){
+                    lineCount.add(secondLineArray.get(i));
+                }
+            }      
+        }
+        return lineCount;    
     }
 }
