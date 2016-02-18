@@ -36,21 +36,23 @@ public class Concordance implements Serializable {
         
         textArr = textFileString.split(" ");
         concordance = new HashMap<String, Word>();
+       
         
+        //Sorts the Word objects based on their number of occurrences from high to low 
+         ArrayList<Word> rankSystemArray = new ArrayList<Word>();
         
         
         /**
-         * For each item in the textArr, the duplicateWord array will be checked to
+         * For each item in the textArr, the concordance will be checked to
          * make sure that a Word object for that string has not been created yet.
-         * If the duplicateWord array does not have an entry for the string then:
-         * 1. an Object of the string will be made and the object will be added to the HashMap
-         * 2. the string will be added to duplicateWord array to check for duplicates of the same string
+         * If the concordance does not have an entry for the string then:
+         * an Object of the string will be made and the object will be added to the HashMap
          * Regardless:
          * For each validated string, the occurrence will be incremented, the line number, and word count number
          * will be updated within the Word object to keep track of that particular string         
          */
         
-         ArrayList<String> duplicateWord = new ArrayList<String>(); 
+         
          
         /**
          * Find the end of the preamble while keeping track of the line number
@@ -97,13 +99,14 @@ public class Concordance implements Serializable {
                 break;
             }
                         
-            cleanString = item.replaceAll("[^a-zA-Z]", "").toLowerCase();   
+            cleanString = item.replaceAll("[^a-zA-Z]", "");
+            cleanString = cleanString.toLowerCase();
             
             if(cleanString.equals("")){
                 continue;
             }
             
-            if(duplicateWord.contains(cleanString)){
+            if(concordance.containsKey(cleanString)){
                 ((Word)concordance.get(cleanString)).incOccurrence();
                 ((Word)concordance.get(cleanString)).addNewLine(lineCount);
                 ((Word)concordance.get(cleanString)).addWordNumber(wordCount);
@@ -113,15 +116,81 @@ public class Concordance implements Serializable {
                 break;
             }
             else{  
-                Word newWord = new Word(cleanString);
-                concordance.put(cleanString, newWord);
-                duplicateWord.add(cleanString);
+                Word newWord = new Word(cleanString);                
+                concordance.put(cleanString, newWord);                
+                rankSystemArray.add(newWord);                
                 ((Word)concordance.get(cleanString)).incOccurrence();
                 ((Word)concordance.get(cleanString)).addNewLine(lineCount);
                 ((Word)concordance.get(cleanString)).addWordNumber(wordCount);
                 wordCount++;
             }
-        }       
+        }
+        /**
+         * Set the rank of a Word based on its index in the rankSystemArray
+         */
+        mergeSort(rankSystemArray);
+        for(int i =0; i < rankSystemArray.size(); i ++){
+            rankSystemArray.get(i).setRank(i+1);
+        }
+    }
+    
+    /**
+     * Merge Sort for to order words based on their number of occurrences (high to low)
+     * @param list
+     * @return 
+     */
+    
+    private  ArrayList<Word> mergeSort(ArrayList<Word> list){
+        ArrayList<Word> left = new ArrayList<Word>();
+        ArrayList<Word> right = new ArrayList<Word>();
+        int center;
+        
+        if(list.size() <= 1)
+            return list;
+        else{
+            center = list.size()/2;
+            for(int i =0; i < center; i ++){
+                left.add(list.get(i));
+            }
+            for(int i=center; i <list.size(); i++){
+                right.add(list.get(i));
+            }
+            left = mergeSort(left);
+            right = mergeSort(right);
+            
+            merge(left, right, list);        
+        }
+        return list;        
+    }
+    
+    private void merge(ArrayList<Word> left, ArrayList<Word> right, ArrayList<Word> list){
+        int leftIndex = 0;
+        int rightIndex = 0;
+        int listIndex = 0;
+        
+        while(leftIndex < left.size() && rightIndex < right.size()){
+            if(left.get(leftIndex).getOccurrence() > right.get(rightIndex).getOccurrence()){
+                list.set(listIndex, left.get(leftIndex));
+                leftIndex++;
+            }
+            else{
+                list.set(listIndex, right.get(rightIndex));
+                rightIndex++;
+            }
+            listIndex++;
+        }
+        if(leftIndex >= left.size()){
+            for(int i = rightIndex; i < right.size(); i++){
+                list.set(listIndex, right.get(i));
+                listIndex++;
+            }
+        }
+        else{
+            for(int i = leftIndex; i < left.size(); i++){
+                list.set(listIndex, left.get(i));
+                listIndex++;
+            }
+        }
     }
 
     /**
