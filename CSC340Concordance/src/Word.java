@@ -14,12 +14,14 @@ public class Word implements Serializable {
          * 
          * String string - holds the word for the Word Object
          * int occurrenceCount - Keeps track of the number of occurrences of the word
+         * int rank - Keeps track of the rank of the word based on number of occurrences with respect to every word in concordance
          * ArrayList<Integer> listOfLines - Keeps track of each line number that word appears on
          * ArrayList<Integer> listWordNumber - Keeps track of each word number for the word
          */
 
         private String string;
         private int occurrenceCount = 0;   
+        private int rank = 0;
         private ArrayList<Integer> listOfLines;
         private ArrayList<Integer> listWordNumber;
                 
@@ -71,4 +73,12 @@ public class Word implements Serializable {
         public ArrayList<Integer> getWordNumber(){
             return listWordNumber;
         }      
+        
+        public void setRank(int rank){
+            this.rank = rank;
+        }
+        
+        public int getRank(){
+            return this.rank;
+        }
     }
