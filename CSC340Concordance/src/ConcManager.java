@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import static java.util.Collections.binarySearch;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -84,11 +85,7 @@ public class ConcManager{
     /**
      * Method to return the rank (based on occurrences) of the given word with respect
      * other word in the concordance
-     * 
-     * The method uses a keySet of the HashTable field to obtain every string in the concurrence
-     * The number of occurrences of the given word is compared to the number of occurrences of
-     * every other word in the concordance
-     * For every word with a higher occurrence, the rank of the word is incremented
+     * Uses getRank() from Word Object
      * 
      * Ranking starts at 1, with the word that has the highest number of occurrences
      * 
@@ -96,20 +93,9 @@ public class ConcManager{
      * @return 
      */
     public Integer rankQuery(String word){     
-        Set keySet = HashTable.keySet();    
-        if(!keySet.contains(word)){
-            return 0;
-        }
-        int wordRank = 1;        
-        for(int i =0; i < keySet.size(); i++){
-            if( appearQuery(keySet.toArray()[i].toString()) > appearQuery(word)){   
-                if(keySet.toArray()[i].toString() == word){
-                    continue;
-                }
-                wordRank++;
-            }               
-        }        
-        return wordRank;
+        if(appearQuery(word) == 0)
+            return 0;              
+        return ((Word)HashTable.get(word)).getRank();
     }
     
     /**
@@ -163,7 +149,7 @@ public class ConcManager{
         return wordArray;
     }
     
-     /**
+    /**
      * Method to return a list of line numbers on which the two words are adjacent on
      * 
      * 
@@ -186,6 +172,8 @@ public class ConcManager{
         ArrayList<Integer> firstArray = ((Word)HashTable.get(firstWord.toLowerCase())).getWordNumber();
         ArrayList<Integer> secondArray = ((Word)HashTable.get(secondWord.toLowerCase())).getWordNumber();
         ArrayList<Integer> lineCount = new ArrayList<Integer>();
+        
+        binarySearch(firstArray, 5);
               
         /**
          * The word with more occurrences needs to used in the loop 
