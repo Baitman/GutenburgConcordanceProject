@@ -173,8 +173,6 @@ public class ConcManager{
         ArrayList<Integer> secondArray = ((Word)HashTable.get(secondWord.toLowerCase())).getWordNumber();
         ArrayList<Integer> lineCount = new ArrayList<Integer>();
         
-        binarySearch(firstArray, 5);
-              
         /**
          * The word with more occurrences needs to used in the loop 
          * Decision statement to find the word with more occurrences
