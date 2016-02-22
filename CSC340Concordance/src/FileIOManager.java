@@ -2,6 +2,7 @@
  * Accomplishes 5 tasks 1. Load a book into memory 2. Save a book into a
  * specified directory 3. Load a concordance locally to memory 4. Save a
  * concordance into a specified directory 5. View saved books and concordance
+ * author Ochaun Marshall & Charles Mayse
  */
 import java.io.*;
 import java.util.*;
