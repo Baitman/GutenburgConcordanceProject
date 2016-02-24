@@ -106,22 +106,30 @@ public class FileIOManager {
         return this.text;
     }
     
-    public String viewBooks() {
+    public String viewBooks() throws FileNotFoundException{
         String dirString = "";
+        Scanner reader;
         File[] dirlist = currentDirectory.listFiles();
         for (int i = 0; i < dirlist.length; i++) {
             if (dirlist[i].isFile() && dirlist[i].toString().contains(".txt")) {
-                dirString += "\t"+dirlist[i].getName()+"\n";
+                dirString += "\t"+dirlist[i].getName()+"\t";
+                reader = new Scanner(new File(dirlist[i].getAbsolutePath()));
+                dirString += reader.nextLine() + "\n";
             }
         }
         return dirString;
 
     }
 
-    public String viewBooks(String bookDir) {
+    public String viewBooks(String bookDir) throws FileNotFoundException {
         String dirString = "";
         File dir = new File(bookDir);
         File[] dirlist = dir.listFiles();
+        
+        System.out.println("hello");
+        Scanner reader;
+        System.out.println("goodbye");
+        
         for (int i = 0; i < dirlist.length; i++) {
             if (dirlist[i].isFile() && dirlist[i].toString().contains(".txt")) {
                 dirString += "\t"+dirlist[i].getName()+"\n";
