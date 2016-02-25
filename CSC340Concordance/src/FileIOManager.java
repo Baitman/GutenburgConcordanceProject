@@ -94,12 +94,23 @@ public class FileIOManager {
                 tempString += available + " | ";
             }
             
-            text = tempString;
+            
+            if (tempString.contains("*** START OF THIS PROJECT GUTENBERG EBOOK")) {
+                // in the future add a .txt file check 
+                text = tempString;
+            }else{
+                throw(new GutenFreeException());
+            }
+            
+            
+            
         }
         catch(IOException e){
             System.out.println("Error with loading book");
             e.printStackTrace();
-        }
+        }catch(GutenFreeException g){
+                System.out.println(g.getMessage());
+            }
     }
     
 
