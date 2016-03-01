@@ -2,6 +2,7 @@
  * Accomplishes 5 tasks 1. Load a book into memory 2. Save a book into a
  * specified directory 3. Load a concordance locally to memory 4. Save a
  * concordance into a specified directory 5. View saved books and concordance
+ * @author Ochaun Marshall & Charles Mayse
  */
 import java.io.*;
 import java.util.*;
@@ -13,7 +14,10 @@ public class FileIOManager {
     private File currentDirectory;
     private FileOutputStream outputStream;
     private String text;
-
+/**
+ * Constructor with a specific directory
+ * @param s - Filename
+ */
     public FileIOManager(String s) {
         currentDirectory = new File(s);
     }
@@ -21,15 +25,25 @@ public class FileIOManager {
     public FileIOManager() {
         currentDirectory = new File(System.getProperty("user.dir"));
     }
-    
+    /**
+     * Returns true if current directory is actually a directory
+     * @return 
+     */
     public boolean verify(){
         return currentDirectory.isDirectory();
     }
-    
+    /**
+     * Returns the current directory 
+     * @return 
+     */
     public String getCurrentDirectory(){
         return currentDirectory.getPath();
     }
-
+/**
+ * Creates a concordance in the current directory with a specific filename
+ * @param con
+ * @param filename 
+ */
     public void saveConc(Concordance con, String filename) {
         String inputcon = filename + ".ser";
         //String contitle = ;
@@ -45,7 +59,10 @@ public class FileIOManager {
         }
 
     }
-
+/**
+ * Creates a concordance in the current directory
+ * @param con 
+ */
         public void saveConc(Concordance con) {
         //String inputcon = filename + ".ser";
         //String contitle = ;
@@ -61,7 +78,11 @@ public class FileIOManager {
         }
 
     }
-    
+    /**
+     * Loads a concordance into memory
+     * @param condir
+     * @return 
+     */
     public Concordance loadConc(String condir) {
 
         try {
@@ -79,7 +100,10 @@ public class FileIOManager {
         }
         return null;
     }
-
+/**
+ *  Loads a standard gutenburg ebook '.txt' into memory
+ * @param bookTitle 
+ */
     public void loadBook(String bookTitle) {
         String tempString = "";
             
@@ -93,20 +117,42 @@ public class FileIOManager {
                 tempString += available + " | ";
             }
             
-            text = tempString;
+            
+            if (tempString.contains("*** START OF THIS PROJECT GUTENBERG EBOOK")) {
+                // in the future add a .txt file check 
+                text = tempString;
+            }else{
+                throw(new GutenFreeException());
+            }
+            
+            
+            
         }
         catch(IOException e){
             System.out.println("Error with loading book");
             e.printStackTrace();
-        }
+        }catch(GutenFreeException g){
+                System.out.println(g.getMessage());
+            }
     }
     
-
+/**
+ * Returns the text
+ * @return 
+ */
     public String getText(){
         return this.text;
     }
+<<<<<<< HEAD
     
     public String viewBooks() throws FileNotFoundException{
+=======
+    /**
+     * View all '.txt' files in the current directory
+     * @return 
+     */
+    public String viewBooks() {
+>>>>>>> origin/master
         String dirString = "";
         Scanner reader;
         File[] dirlist = currentDirectory.listFiles();
@@ -120,8 +166,17 @@ public class FileIOManager {
         return dirString;
 
     }
+<<<<<<< HEAD
 
     public String viewBooks(String bookDir) throws FileNotFoundException {
+=======
+/**
+ * Displays all the .txt files in a specified directory
+ * @param bookDir
+ * @return 
+ */
+    public String viewBooks(String bookDir) {
+>>>>>>> origin/master
         String dirString = "";
         File dir = new File(bookDir);
         File[] dirlist = dir.listFiles();
@@ -138,7 +193,10 @@ public class FileIOManager {
 
         return dirString;
     }
-
+/**
+ * Displays all the saved concordance files in the current directory 
+ * @return 
+ */
     public String viewSavedConc() {
         String dirString = "";
         File[] dirlist = currentDirectory.listFiles();
@@ -149,7 +207,11 @@ public class FileIOManager {
         }
         return dirString;
     }
-
+/**
+ * Displays all the concordance files in a specify directory
+ * @param conDir
+ * @return 
+ */
     public String viewSavedConc(String conDir) {
         String dirString = "";
         File dir = new File(conDir);
