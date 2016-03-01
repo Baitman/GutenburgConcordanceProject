@@ -25,8 +25,7 @@ public class ConcManager{
     public ConcManager(HashMap<String, Object> HashTable){        
         this.HashTable = HashTable;
     }
-  
-    
+      
     /**
      * Method to return a list of line numbers on which the given word appears on
      * If the given word appears on the same line twice, then only one occurrence appears
@@ -36,10 +35,9 @@ public class ConcManager{
      * @return  an ArrayList<Integer> of exact size with line numbers appearing in ascending order
      */
    public ArrayList<Integer> lineListQuery(String word){      
-       Set keySet = HashTable.keySet();
-        if (!keySet.contains(word)){
-            return null;
-        }
+      if(isNotValid(word))
+          return null;
+      
        ArrayList<Integer> oldLineList = ((Word) HashTable.get(word.toLowerCase())).getListOfLines();
        ArrayList<Integer> lineList = new ArrayList<Integer>();
        
@@ -61,10 +59,8 @@ public class ConcManager{
      * @return an integer value for the number of lines
      */
     public Integer numLineListQuery(String word){
-        Set keySet = HashTable.keySet();
-        if (!keySet.contains(word)){
-            return 0;
-        }
+       if(isNotValid(word))
+           return 0;
         return lineListQuery(word).size();
     }
     
@@ -74,9 +70,8 @@ public class ConcManager{
      * @param word The word being queried 
      * @return an integer value for the number of occurrences of the word
      */
-    public Integer appearQuery(String word){             
-        Set keySet = HashTable.keySet();
-        if (!keySet.contains(word)){
+    public Integer appearQuery(String word){     
+        if (isNotValid(word)){
             return 0;
         }
         return ((Word) HashTable.get(word.toLowerCase())).getOccurrence();
@@ -93,7 +88,7 @@ public class ConcManager{
      * @return 
      */
     public Integer rankQuery(String word){     
-        if(appearQuery(word) == 0)
+        if(isNotValid(word))
             return 0;              
         return ((Word)HashTable.get(word)).getRank();
     }
@@ -112,6 +107,8 @@ public class ConcManager{
      *          The words appears as they would in the text, with the target word always in the middle of the array
      */
     public String[] distanceQuery(String word, Integer distance, Integer lineNumber){
+        if(isNotValid(word))
+            return null;
         /**
          * Find the word's word number based on the given line number
          * Because of how they are stored in the word Object, the indexes of the list of lines 
@@ -150,19 +147,19 @@ public class ConcManager{
     }
     
     /**
+     * Overloaded method for two word adjacency query
      * Method to return a list of line numbers on which the two words are adjacent on
-     * 
+     * The words can appear in any order as long as they are adjacent
      * 
      * @param firstWord 
      * @param secondWord
      * @return ArrayList<Integer> an array of line numbers
      */    
-    public ArrayList<Integer> adjacentQuery(String firstWord, String secondWord){
-              
+    public ArrayList<Integer> adjacentQuery(String firstWord, String secondWord){              
         /**
          * Check if words appear in concordance
          */
-        if(appearQuery(firstWord) == 0 || appearQuery(secondWord) == 0 ){
+        if(isNotValid(firstWord) || isNotValid(secondWord)){
             return null;
         }    
         
@@ -172,7 +169,7 @@ public class ConcManager{
         ArrayList<Integer> firstArray = ((Word)HashTable.get(firstWord.toLowerCase())).getWordNumber();
         ArrayList<Integer> secondArray = ((Word)HashTable.get(secondWord.toLowerCase())).getWordNumber();
         ArrayList<Integer> lineCount = new ArrayList<Integer>();
-        
+                      
         /**
          * The word with more occurrences needs to used in the loop 
          * Decision statement to find the word with more occurrences
@@ -211,5 +208,125 @@ public class ConcManager{
             }      
         }
         return lineCount;    
+    }
+    
+    /**
+     * Overloaded method for three word adjacency query
+     * Method to return a list of line numbers on which the three words are adjacent on
+     * The three words can appear in any order as long as they are adjacent to one another
+     * 
+     * @param firstWord 
+     * @param secondWord
+     * @return ArrayList<Integer> an array of line numbers
+     */  
+    public ArrayList<Integer> adjacentQuery(String firstWord, String secondWord, String thirdWord){              
+        /**
+         * Check if words appear in concordance
+         */
+        if(isNotValid(firstWord) || isNotValid(secondWord) || isNotValid(thirdWord)){
+            return null;
+        }    
+        
+        /** 
+         * Get array of word counts for first word and second word and third word
+         */
+        ArrayList<Integer> firstArray = ((Word)HashTable.get(firstWord.toLowerCase())).getWordNumber();
+        ArrayList<Integer> secondArray = ((Word)HashTable.get(secondWord.toLowerCase())).getWordNumber();
+        ArrayList<Integer> thirdArray = ((Word)HashTable.get(thirdWord.toLowerCase())).getWordNumber();
+        ArrayList<Integer> lineCount = new ArrayList<Integer>();
+                      
+        /**
+         * The word with more occurrences needs to used in the loop 
+         * Outer if... else if ... else if statement is used to find the word with more occurrences
+         */
+        if(firstArray.size() > secondArray.size() && firstArray.size() > thirdArray.size()){        
+            /**
+             * Search the first array's values and compare to the second array and third array
+             * check if any value in the first array is within distance of words in the second or third array
+             * Store the line numbers that this occurs on
+             */
+            ArrayList<Integer> firstLineArray = ((Word)HashTable.get(firstWord.toLowerCase())).getListOfLines();
+            for(int i =0; i < firstArray.size(); i++){
+                if(secondArray.contains(firstArray.get(i) -1)){
+                  if(thirdArray.contains(firstArray.get(i)+1) || thirdArray.contains(firstArray.get(i)-2)){
+                      lineCount.add(firstLineArray.get(i));
+                  }      
+                }
+                else if (secondArray.contains(firstArray.get(i)+1)){
+                    if(thirdArray.contains(firstArray.get(i)-1) || thirdArray.contains(firstArray.get(i)+2)){
+                        lineCount.add(firstLineArray.get(i));
+                    }
+                }    
+                else if (secondArray.contains(firstArray.get(i)-2) && thirdArray.contains(firstArray.get(i)-1)){
+                    lineCount.add(firstLineArray.get(i));                   
+                }
+                 else if (secondArray.contains(firstArray.get(i)+2) && thirdArray.contains(firstArray.get(i)+1)){
+                    lineCount.add(firstLineArray.get(i));                   
+                }
+            }        
+        }
+        else if (secondArray.size() > thirdArray.size()) {
+            /**
+             * Search the second array's values and compare to the first array and third array
+             * check if any value in the second array is within distance of words in the first or third array
+             * Store the line numbers that this occurs on
+             */
+            ArrayList<Integer> secondLineArray = ((Word)HashTable.get(secondWord.toLowerCase())).getListOfLines();
+             for(int i =0; i < secondArray.size(); i++){
+                if(firstArray.contains(secondArray.get(i) -1)){
+                  if(thirdArray.contains(secondArray.get(i)+1) || thirdArray.contains(secondArray.get(i)-2)){
+                      lineCount.add(secondLineArray.get(i));
+                  }      
+                }
+                else if (firstArray.contains(secondArray.get(i)+1)){
+                    if(thirdArray.contains(secondArray.get(i)-1) || thirdArray.contains(secondArray.get(i)+2)){
+                        lineCount.add(secondLineArray.get(i));
+                    }
+                }    
+                else if (firstArray.contains(secondArray.get(i)-2) && thirdArray.contains(secondArray.get(i)-1)){
+                    lineCount.add(secondLineArray.get(i));                   
+                }
+                else if (firstArray.contains(secondArray.get(i)+2) && thirdArray.contains(secondArray.get(i)+1)){
+                    lineCount.add(secondLineArray.get(i));                   
+                }
+             }
+        }
+        else if (thirdArray.size() > secondArray.size()){  
+            /**
+             * Search the third array's values and compare to the first array and second array
+             * check if any value in the third array is within distance of words in the first or second array
+             * Store the line numbers that this occurs on
+             */
+            ArrayList<Integer> thirdLineArray = ((Word)HashTable.get(thirdWord.toLowerCase())).getListOfLines();
+             for(int i =0; i < thirdArray.size(); i++){
+                if(secondArray.contains(thirdArray.get(i) -1)){
+                  if(firstArray.contains(thirdArray.get(i)+1) || firstArray.contains(thirdArray.get(i)-2)){
+                      lineCount.add(thirdLineArray.get(i));
+                  }      
+                }
+                else if (secondArray.contains(thirdArray.get(i)+1)){
+                    if(firstArray.contains(thirdArray.get(i)-1) || firstArray.contains(thirdArray.get(i)+2)){
+                        lineCount.add(thirdLineArray.get(i));
+                    }
+                }    
+                else if (secondArray.contains(thirdArray.get(i)-2) && firstArray.contains(thirdArray.get(i)-1)){
+                    lineCount.add(thirdLineArray.get(i));                   
+                }
+                else if (secondArray.contains(thirdArray.get(i)+2) && firstArray.contains(thirdArray.get(i)+1)){
+                    lineCount.add(thirdLineArray.get(i));                   
+                }
+            }  
+        }        
+        return lineCount;    
+    }
+    
+    /**
+     * Method to check if word is not in the concordance
+     * @param word
+      * @return 
+     */
+    private Boolean isNotValid(String word){
+        Set keySet = HashTable.keySet();
+        return !keySet.contains(word);
     }
 }
