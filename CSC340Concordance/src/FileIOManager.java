@@ -143,16 +143,12 @@ public class FileIOManager {
     public String getText(){
         return this.text;
     }
-<<<<<<< HEAD
-    
-    public String viewBooks() throws FileNotFoundException{
-=======
+
     /**
      * View all '.txt' files in the current directory
      * @return 
      */
-    public String viewBooks() {
->>>>>>> origin/master
+public String viewBooks() throws FileNotFoundException{
         String dirString = "";
         Scanner reader;
         File[] dirlist = currentDirectory.listFiles();
@@ -166,17 +162,15 @@ public class FileIOManager {
         return dirString;
 
     }
-<<<<<<< HEAD
 
-    public String viewBooks(String bookDir) throws FileNotFoundException {
-=======
+
+ 
 /**
  * Displays all the .txt files in a specified directory
  * @param bookDir
  * @return 
  */
-    public String viewBooks(String bookDir) {
->>>>>>> origin/master
+   public String viewBooks(String bookDir) throws FileNotFoundException {
         String dirString = "";
         File dir = new File(bookDir);
         File[] dirlist = dir.listFiles();

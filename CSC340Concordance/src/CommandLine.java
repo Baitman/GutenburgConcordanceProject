@@ -5,6 +5,7 @@
  */
 
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class CommandLine {
@@ -49,7 +50,7 @@ public class CommandLine {
      * @param userCommand is the command in inputArr[0] that the user entered, inputArr[1] and inputArr[2] 
      * are also used for input
      */
-    public void setCommand(String[] userCommand) {
+    public void setCommand(String[] userCommand) throws FileNotFoundException {
         switch (userCommand[0]) {
             /**
              * Sets the directory
