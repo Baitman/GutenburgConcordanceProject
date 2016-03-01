@@ -206,7 +206,17 @@ public class CommandLine {
              case ("qadj"):
                 command = Command.QADJ;
                 if (flowStateTransition(command)) {
-                    ArrayList<Integer> lines = concManager.adjacentQuery(userCommand[1], userCommand[2]);
+                    ArrayList<Integer> lines = null;
+                    
+                    try{
+                        if(userCommand[3] != null)
+                            lines = concManager.adjacentQuery(userCommand[1], userCommand[2], userCommand[3]);                           
+                    }
+                    catch(ArrayIndexOutOfBoundsException e){
+                        lines = concManager.adjacentQuery(userCommand[1], userCommand[2]);
+                    }
+                        
+                 
                     if(lines != null){
                         System.out.print("\tThese words are adjacent on lines: ");
                         for(int i =0; i < lines.size(); i++){                        
