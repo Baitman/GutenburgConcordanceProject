@@ -7,20 +7,18 @@
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class CommandLine {
 
     /**
-     * Required object references
+     * Required object references.
      */
     FileIOManager fileIO = null;
     Concordance concordance = null;
     ConcManager concManager = null;
 
     /**
-     * Enumeration of all of the possible commands
+     * Enumeration of all of the possible commands.
      */
     private enum Command {
 
@@ -33,7 +31,7 @@ public class CommandLine {
      * Enumeration of the different states the program will be in SETUP -
      * program is in a state that file directory must be established FETCH -
      * program is in a state that a file must be loaded MANIPULATE - program is
-     * in final state in which it can perform any command
+     * in final state in which it can perform any command.
      */
     private enum FlowState {
 
@@ -41,7 +39,7 @@ public class CommandLine {
     }
 
     /**
-     * Initial states for program flow
+     * Initial states for program flow.
      */
     private Command command = Command.START;
     private FlowState flowState = FlowState.SETUP;
@@ -50,12 +48,12 @@ public class CommandLine {
      * Changes the current command and checks it against the program flow.
      *
      * @param userCommand is the command in inputArr[0] that the user entered,
-     * inputArr[1] and inputArr[2] are also used for input
+     * inputArr[1] and inputArr[2] are also used for input.
      */
     public void setCommand(String[] userCommand) {
         switch (userCommand[0]) {
             /**
-             * Sets the directory
+             * Sets the directory.
              */
             case ("setdir"):
                 command = Command.SETDIR;
@@ -69,15 +67,14 @@ public class CommandLine {
                     if (fileIO.verify()) {
                         flowState = FlowState.FETCH;
                         System.out.println("\tLoaded.");
-                    }
-                    else{
-                        System.out.println("\tDirectory is not valid. Please try again.");  
+                    } else {
+                        System.out.println("\tDirectory is not valid. Please try again.");
                     }
                 }
                 break;
             /**
              * Finds a book on Gutenberg.org, however for this implementation,
-             * it will simply display the contents of the directory
+             * it will simply display the contents of the directory.
              */
             case ("findbk"):
                 command = Command.FINDBK;
@@ -91,7 +88,7 @@ public class CommandLine {
                 }
                 break;
             /**
-             * Lists the contents of the directory
+             * Lists the contents of the directory.
              */
             case ("listbk"):
                 command = Command.LISTBK;
@@ -105,7 +102,7 @@ public class CommandLine {
                 }
                 break;
             /**
-             * Loads the book into the program
+             * Loads the book into the program.
              */
             case ("loadbk"):
                 command = Command.LOADBK;
@@ -131,7 +128,30 @@ public class CommandLine {
                 System.out.println("\tFile is loaded.");
                 break;
             /**
-             * Initiates and makes the concordance
+             * Loads a concordance.
+             */
+            case ("loadcs"):
+                command = Command.LOADCS;
+                try {
+                    if (flowStateTransition(command)) {
+                        flowState = FlowState.MANIPULATE;
+                        fileIO.loadConc(userCommand[1]);
+                    }
+                } catch (FileNotFoundException fnfe) {
+                    System.out.println("\tConcordance not found. Check file name and extension");
+                    break;
+                } catch (IOException ioe){
+                    System.out.println("\tError loading Concordance. Try again.");
+                    break;
+                } catch (ClassNotFoundException cnfe){
+                    System.out.println("\tConcordance not found. Check file name and extension");
+                    break;
+                }
+                System.out.println("Loaded.");
+                break;
+                
+            /**
+             * Initiates and makes the concordance.
              */
             case ("makecs"):
                 command = Command.MAKECS;
@@ -147,7 +167,7 @@ public class CommandLine {
                 }
                 break;
             /**
-             * Saves the concordance
+             * Saves the concordance.
              */
             case ("savecs"):
                 command = Command.SAVECS;
@@ -157,7 +177,7 @@ public class CommandLine {
                 }
                 break;
             /**
-             * Shows which line the target word appears
+             * Shows which line the target word appears.
              */
             case ("qline"):
                 command = Command.QLINE;
@@ -182,40 +202,38 @@ public class CommandLine {
                 }
                 break;
             /**
-             * Shows the number of lines a target word appears in a concordance
+             * Shows the number of lines a target word appears in a concordance.
              */
             case ("qnline"):
                 command = Command.QNLINE;
                 if (flowStateTransition(command)) {
-                    try{
-                    System.out.println("\tNumber of lines " + userCommand[1].toLowerCase() + " appears");
-                    System.out.println("\t" + concManager.numLineListQuery(userCommand[1]).toString().toLowerCase());
-                    int lineCount = concManager.numLineListQuery(userCommand[1].toLowerCase());
-                    if (lineCount == 0) {
-                        System.out.println("\t" + userCommand[1].toLowerCase() + " does not appear in the concordance.");
-                    } else {
-                        System.out.println("\t" + userCommand[1].toLowerCase() + " appears on " + lineCount + " line(s)");
-                    }
-                    }
-                    catch(ArrayIndexOutOfBoundsException aioobe){
+                    try {
+                        System.out.println("\tNumber of lines " + userCommand[1].toLowerCase() + " appears");
+                        System.out.println("\t" + concManager.numLineListQuery(userCommand[1]).toString().toLowerCase());
+                        int lineCount = concManager.numLineListQuery(userCommand[1].toLowerCase());
+                        if (lineCount == 0) {
+                            System.out.println("\t" + userCommand[1].toLowerCase() + " does not appear in the concordance.");
+                        } else {
+                            System.out.println("\t" + userCommand[1].toLowerCase() + " appears on " + lineCount + " line(s)");
+                        }
+                    } catch (ArrayIndexOutOfBoundsException aioobe) {
                         System.out.println("\tInvalid command syntax: <command> <param>");
                     }
                 }
                 break;
             /**
-             * Shows the number of times a word appears in a concordance
+             * Shows the number of times a word appears in a concordance.
              */
             case ("qappr"):
                 command = Command.QAPPR;
                 if (flowStateTransition(command)) {
-                    try{
-                    int wordCount = concManager.appearQuery(userCommand[1].toLowerCase());
-                    System.out.println("\t" + userCommand[1].toLowerCase() + " appears " + wordCount + ((wordCount == 1) ? " time" : " times"));
-                    }
-                    catch(ArrayIndexOutOfBoundsException aioobe){
+                    try {
+                        int wordCount = concManager.appearQuery(userCommand[1].toLowerCase());
+                        System.out.println("\t" + userCommand[1].toLowerCase() + " appears " + wordCount + ((wordCount == 1) ? " time" : " times"));
+                    } catch (ArrayIndexOutOfBoundsException aioobe) {
                         System.out.println("\tInvalid command syntax: <command> <param>");
                     }
-                    }
+                }
                 break;
             /**
              * Shows target word rank
@@ -223,48 +241,46 @@ public class CommandLine {
             case ("qrank"):
                 command = Command.QRANK;
                 if (flowStateTransition(command)) {
-                    try{
-                    System.out.print("\t" + userCommand[1].toLowerCase() + " rank:");
-                    System.out.println(" " + concManager.rankQuery(userCommand[1].toLowerCase()));
-                    int rank = concManager.rankQuery(userCommand[1].toLowerCase());
-                    if (rank == 0) {
-                        System.out.println("\t" + userCommand[1].toLowerCase() + " does not appear in the concordance.");
-                    } else {
-                        System.out.println("\tRank: " + rank);
-                    }
-                    }
-                    catch(ArrayIndexOutOfBoundsException aioobe){
+                    try {
+                        System.out.print("\t" + userCommand[1].toLowerCase() + " rank:");
+                        System.out.println(" " + concManager.rankQuery(userCommand[1].toLowerCase()));
+                        int rank = concManager.rankQuery(userCommand[1].toLowerCase());
+                        if (rank == 0) {
+                            System.out.println("\t" + userCommand[1].toLowerCase() + " does not appear in the concordance.");
+                        } else {
+                            System.out.println("\tRank: " + rank);
+                        }
+                    } catch (ArrayIndexOutOfBoundsException aioobe) {
                         System.out.println("Invalid command syntax: <command> <param>");
                     }
                 }
                 break;
             /**
              * Shows the number of words that appear within a line distance of a
-             * target word
+             * target word.
              */
             case ("qdist"):
                 command = Command.QDIST;
                 if (flowStateTransition(command)) {
-                    try{
-                    System.out.println("\tNumber of words that appear " + userCommand[2] + "line(s) away from " + userCommand[1].toLowerCase());
-                    System.out.println("\t" + concManager.distanceQuery(userCommand[1].toLowerCase(), Integer.parseInt(userCommand[2]), Integer.parseInt(userCommand[3])));
-                    String[] wordArray = concManager.distanceQuery("produced", 3, 27);
+                    try {
+                        System.out.println("\tNumber of words that appear " + userCommand[2] + "line(s) away from " + userCommand[1].toLowerCase());
+                        System.out.println("\t" + concManager.distanceQuery(userCommand[1].toLowerCase(), Integer.parseInt(userCommand[2]), Integer.parseInt(userCommand[3])));
+                        String[] wordArray = concManager.distanceQuery("produced", 3, 27);
 
-                    for (int i = 0; i < wordArray.length; i++) {
-                        if (wordArray[i] == null) {
-                            continue;
+                        for (int i = 0; i < wordArray.length; i++) {
+                            if (wordArray[i] == null) {
+                                continue;
+                            }
+                            System.out.print(wordArray[i] + " ");
                         }
-                        System.out.print(wordArray[i] + " ");
-                    }
-                    System.out.println();
-                    }
-                    catch(ArrayIndexOutOfBoundsException aioobe){
+                        System.out.println();
+                    } catch (ArrayIndexOutOfBoundsException aioobe) {
                         System.out.println("Invalid command syntax: <command> <param> <param>");
                     }
                 }
                 break;
             /**
-             * Shows the number of words that appear adjacent to a target word
+             * Shows the number of words that appear adjacent to a target word.
              */
             case ("qadj"):
                 command = Command.QADJ;

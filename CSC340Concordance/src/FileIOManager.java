@@ -1,6 +1,6 @@
 
 /**
- * Accomplishes 5 tasks 1. Load a book into memory 2. Save a book into a
+ * Accomplishes 5 tasks. 1. Load a book into memory 2. Save a book into a
  * specified directory 3. Load a concordance locally to memory 4. Save a
  * concordance into a specified directory 5. View saved books and concordance
  *
@@ -26,6 +26,10 @@ public class FileIOManager {
         currentDirectory = new File(s);
     }
 
+    /**
+     * Default constructor to set the current directory to the working directory
+     * of the program if the user doesn't specify a directory.
+     */
     public FileIOManager() {
         currentDirectory = new File(System.getProperty("user.dir"));
     }
@@ -33,7 +37,7 @@ public class FileIOManager {
     /**
      * Returns true if current directory is actually a directory
      *
-     * @return
+     * @return True if the directory is valid. False otherwise.
      */
     public boolean verify() {
         return currentDirectory.isDirectory();
@@ -42,7 +46,7 @@ public class FileIOManager {
     /**
      * Returns the current directory
      *
-     * @return
+     * @return the current directory.
      */
     public String getCurrentDirectory() {
         return currentDirectory.getPath();
@@ -51,7 +55,7 @@ public class FileIOManager {
     /**
      * Creates a concordance in the current directory with a specific filename
      *
-     * @param con
+     * @param con the concordance
      * @param filename
      */
     public void saveConc(Concordance con, String filename) {
@@ -95,24 +99,17 @@ public class FileIOManager {
      * Loads a concordance into memory
      *
      * @param condir
-     * @return
+     * @return concordance
+     * @throws FileNotFoundException,IOException if the specified concordance doesn't exist.
      */
-    public Concordance loadConc(String condir) {
+    public Concordance loadConc(String condir) throws FileNotFoundException, IOException, ClassNotFoundException {
 
-        try {
-            FileInputStream fis = new FileInputStream(condir);
-            ObjectInputStream ois = new ObjectInputStream(fis);
+        FileInputStream fis = new FileInputStream(currentDirectory.getPath()+File.pathSeparator+condir);
+        ObjectInputStream ois = new ObjectInputStream(fis);
 
-            Concordance c = (Concordance) ois.readObject();
-            return c;
+        Concordance c = (Concordance) ois.readObject();
+        return c;
 
-        } catch (IOException crap) {
-            System.out.println("Class not found");
-            crap.printStackTrace();
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(FileIOManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
     }
 
     /**
