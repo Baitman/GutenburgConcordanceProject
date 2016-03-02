@@ -4,6 +4,7 @@
  * 2/9/16
  * 
  * Delivered 2/12/16 for first use-case
+ * 3/2/16 Exception handling for stability improvements. 
  */
 
 /**

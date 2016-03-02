@@ -8,8 +8,6 @@
  */
 import java.io.*;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class FileIOManager {
 
@@ -116,6 +114,9 @@ public class FileIOManager {
      * Loads a standard gutenburg ebook '.txt' into memory
      *
      * @param bookTitle
+     * @throws FileNotFoundException, IOException if there is an issue with loading the text file
+     * @throws GutenFreeException is thrown if the file isn't from Project Gutenberg, or contains the Gutenberg preamble, 
+     * program execution will continue.
      */
     public void loadBook(String bookTitle) throws FileNotFoundException, IOException, GutenFreeException {
         String tempString = "";
@@ -141,7 +142,7 @@ public class FileIOManager {
     /**
      * Returns the text
      *
-     * @return
+     * @return the text from the file
      */
     public String getText() {
         return this.text;
@@ -150,7 +151,9 @@ public class FileIOManager {
     /**
      * View all '.txt' files in the current directory
      *
-     * @return
+     * @return the txt files in the current directory
+     * @throws FileNotFoundException if there is an error in displaying the 
+     * txt files in the directoy.
      */
     public String viewBooks() throws FileNotFoundException {
 
@@ -171,7 +174,7 @@ public class FileIOManager {
     /**
      * Displays all the saved concordance files in the current directory
      *
-     * @return
+     * @return the list of Concordances in the directory
      */
     public String viewSavedConc() {
         String dirString = "";
@@ -182,25 +185,6 @@ public class FileIOManager {
             }
         }
         return dirString;
-    }
-
-    /**
-     * Displays all the concordance files in a specify directory
-     *
-     * @param conDir
-     * @return
-     */
-    public String viewSavedConc(String conDir) {
-        String dirString = "";
-        File dir = new File(conDir);
-        File[] dirlist = dir.listFiles();
-        for (int i = 0; i < dirlist.length; i++) {
-            if (dirlist[i].isFile() && dirlist[i].toString().contains(".ser")) {
-                dirString += "\t" + dirlist[i].getName() + "\n";
-            }
-        }
-
-        return conDir;
     }
 
 }

@@ -3,25 +3,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-public class Title {
-
-    public static void main(String[] args) {
-        TitleElement head = new TitleElement();
-        TitleElement tail = new TitleElement();
-        TitleElement curr = new TitleElement();
-
-    }
-
-    public void addTitle(TitleElement curr, String title) throws FileNotFoundException {
-        curr.setNext(curr);
-        curr = curr.getNext();
-        curr.setTitle(title);
-        curr.setText();//pass param to setter
-        curr.createConcordance();
-
-    }
-}
-
 class TitleElement {
 
     private TitleElement next = new TitleElement();

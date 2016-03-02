@@ -109,7 +109,6 @@ public class CommandLine {
                 try {
                     if (flowStateTransition(command)) {
                         flowState = FlowState.MANIPULATE;
-
                         fileIO.loadBook(userCommand[1]);
                     }
                 } catch (FileNotFoundException fnfe) {
@@ -147,7 +146,7 @@ public class CommandLine {
                     System.out.println("\tConcordance not found. Check file name and extension");
                     break;
                 }
-                System.out.println("Loaded.");
+                System.out.println("Concordance loaded.");
                 break;
                 
             /**
