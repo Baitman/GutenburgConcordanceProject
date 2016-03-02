@@ -1,13 +1,11 @@
-/*
- * This is a custom exception to be thrown when the user tries to make a 
-a concordance out of a .txt file that is not a standard project gutenburg .txt 
-file.
- */
-
 /**
- *
- * @author Ochaun Marshall
- */
+ * This is a custom exception to be thrown when the user tries to make a 
+ * a concordance out of a .txt file that is not a standard project gutenburg .txt 
+ * file.
+
+ *@author Ochaun Marshall
+*/
+ 
 public class GutenFreeException extends Exception{
     public static final long serialVersionUID = 42L;
     // exception code will be placed here

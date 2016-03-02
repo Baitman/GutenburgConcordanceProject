@@ -109,9 +109,10 @@ public class CommandLine {
                 command = Command.LOADBK;
                 try {
                     if (flowStateTransition(command)) {
-                        flowState = FlowState.MANIPULATE;
                         fileIO.loadBook(userCommand[1]);
                     }
+                    flowState = FlowState.MANIPULATE;
+                    System.out.println("\tFile is loaded.");
                 } catch (FileNotFoundException fnfe) {
                     System.out.println("\tError loading file, be sure to check filenames and extensions");
                     break;
@@ -125,7 +126,6 @@ public class CommandLine {
                     System.out.println("\tInvalid command syntax: <command> <filename>");
                     break;
                 }
-                System.out.println("\tFile is loaded.");
                 break;
             /**
              * Loads a concordance.
@@ -134,22 +134,22 @@ public class CommandLine {
                 command = Command.LOADCS;
                 try {
                     if (flowStateTransition(command)) {
-                        flowState = FlowState.MANIPULATE;
                         fileIO.loadConc(userCommand[1]);
                     }
+                    flowState = FlowState.MANIPULATE;
+                    System.out.println("Concordance loaded.");
                 } catch (FileNotFoundException fnfe) {
                     System.out.println("\tConcordance not found. Check file name and extension");
                     break;
-                } catch (IOException ioe){
+                } catch (IOException ioe) {
                     System.out.println("\tError loading Concordance. Try again.");
                     break;
-                } catch (ClassNotFoundException cnfe){
+                } catch (ClassNotFoundException cnfe) {
                     System.out.println("\tConcordance not found. Check file name and extension");
                     break;
                 }
-                System.out.println("Concordance loaded.");
                 break;
-                
+
             /**
              * Initiates and makes the concordance.
              */
@@ -198,6 +198,8 @@ public class CommandLine {
                         }
                     } catch (ArrayIndexOutOfBoundsException aioobe) {
                         System.out.println("\tInvalid command syntax: <command> <param>");
+                    } catch (NullPointerException npe) {
+                        System.out.println("\tPlease make a concordance before performing a query");
                     }
                 }
                 break;
@@ -217,6 +219,8 @@ public class CommandLine {
                         }
                     } catch (ArrayIndexOutOfBoundsException aioobe) {
                         System.out.println("\tInvalid command syntax: <command> <param>");
+                    } catch (NullPointerException npe) {
+                        System.out.println("\tPlease make a concordance before performing a query");
                     }
                 }
                 break;
@@ -231,6 +235,8 @@ public class CommandLine {
                         System.out.println("\t" + userCommand[1].toLowerCase() + " appears " + wordCount + ((wordCount == 1) ? " time" : " times"));
                     } catch (ArrayIndexOutOfBoundsException aioobe) {
                         System.out.println("\tInvalid command syntax: <command> <param>");
+                    } catch (NullPointerException npe) {
+                        System.out.println("\tPlease make a concordance before performing a query");
                     }
                 }
                 break;
@@ -251,6 +257,8 @@ public class CommandLine {
                         }
                     } catch (ArrayIndexOutOfBoundsException aioobe) {
                         System.out.println("Invalid command syntax: <command> <param>");
+                    } catch (NullPointerException npe) {
+                        System.out.println("\tPlease make a concordance before performing a query");
                     }
                 }
                 break;
@@ -274,6 +282,8 @@ public class CommandLine {
                         System.out.println();
                     } catch (ArrayIndexOutOfBoundsException aioobe) {
                         System.out.println("Invalid command syntax: <command> <param> <param>");
+                    } catch (NullPointerException npe) {
+                        System.out.println("\tPlease make a concordance before performing a query");
                     }
                 }
                 break;
@@ -291,6 +301,9 @@ public class CommandLine {
                         }
                     } catch (ArrayIndexOutOfBoundsException e) {
                         lines = concManager.adjacentQuery(userCommand[1], userCommand[2]);
+                    } catch (NullPointerException npe) {
+                        System.out.println("\tPlease make a concordance before performing a query");
+                        break;
                     }
 
                     if (lines != null) {

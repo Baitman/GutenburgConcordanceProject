@@ -39,45 +39,80 @@ public class Word implements Serializable {
         }
         
         /**
-         * Getters and setters for fields 
+         * Sets string field.
+         * @param s string
          */
-
         public void setString(String s) {
             this.string = s;
         }
 
+        /**
+         * Gets string field.
+         * @return string field
+         */
         public String getString() {
             return this.string;
         }
         
+        /**
+         * Increases the occurrence of a word.
+         */
         public void incOccurrence(){
             occurrenceCount++;
         }
         
+        /**
+         * Gets the number of occurrences of a word.
+         * @return int of the number of occurrences
+         */
         public Integer getOccurrence(){
             return occurrenceCount;
         }
         
+        /**
+         * Adds a new line.
+         * @param newLine 
+         */
         public void addNewLine(int newLine){
                 listOfLines.add(newLine+1);        
         }
         
+        /**
+         * Returns the list of lines
+         * @return 
+         */
         public ArrayList<Integer> getListOfLines(){
             return listOfLines;
         }
         
+        /**
+         * Adds a word number
+         * @param wordNumber 
+         */
         public void addWordNumber(int wordNumber){
             listWordNumber.add(wordNumber);
         }
         
+        /**
+         * Returns the word number
+         * @return 
+         */
         public ArrayList<Integer> getWordNumber(){
             return listWordNumber;
         }      
         
+        /**
+         * Sets the rank
+         * @param rank 
+         */
         public void setRank(int rank){
             this.rank = rank;
         }
         
+        /**
+         * Returns a rank of a word
+         * @return 
+         */
         public int getRank(){
             return this.rank;
         }
