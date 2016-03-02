@@ -67,7 +67,7 @@ public class CommandLine {
                     }
                     if (fileIO.verify()) {
                         flowState = FlowState.FETCH;
-                        System.out.println("\tLoaded.");
+                        System.out.println("\tDirectory is set.");
                     } else {
                         System.out.println("\tDirectory is not valid. Please try again.");
                     }
