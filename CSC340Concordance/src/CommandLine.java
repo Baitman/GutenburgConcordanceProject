@@ -68,9 +68,12 @@ public class CommandLine {
                     }
                     if (fileIO.verify()) {
                         flowState = FlowState.FETCH;
+                        System.out.println("\tLoaded.");
+                    }
+                    else{
+                        System.out.println("\tDirectory is not valid. Please try again.");  
                     }
                 }
-                System.out.println("\tDirectory valid?" + ((fileIO.verify()) ? "Yes" : "No"));
                 break;
             /**
              * Finds a book on Gutenberg.org, however for this implementation,
@@ -114,13 +117,18 @@ public class CommandLine {
                     }
                 } catch (FileNotFoundException fnfe) {
                     System.out.println("\tError loading file, be sure to check filenames and extensions");
+                    break;
                 } catch (GutenFreeException gfe) {
                     System.out.println("\tWarning: File is not from Gutenberg.org");
+                    break;
                 } catch (IOException ex) {
                     System.out.println("\tError with loading file");
+                    break;
                 } catch (ArrayIndexOutOfBoundsException aioobe) {
-                    System.out.println("\tInvalid command <command> <filename>");
+                    System.out.println("\tInvalid command syntax: <command> <filename>");
+                    break;
                 }
+                System.out.println("\tFile is loaded.");
                 break;
             /**
              * Initiates and makes the concordance
@@ -154,18 +162,22 @@ public class CommandLine {
             case ("qline"):
                 command = Command.QLINE;
                 if (flowStateTransition(command)) {
-                    System.out.println("\tThe lines in which " + userCommand[1].toLowerCase() + " appears");
-                    System.out.println("\t" + concManager.lineListQuery(userCommand[1].toLowerCase()).toString());
-                    ArrayList<Integer> arrList = concManager.lineListQuery(userCommand[1].toLowerCase());
-                    if (arrList == null) {
-                        System.out.println("\t" + userCommand[1].toLowerCase() + " does not appear in the concordance.");
-                    } else {
-                        System.out.print("\tLine numbers where " + userCommand[1].toLowerCase() + " appears: ");
+                    try {
+                        System.out.println("\tThe lines in which " + userCommand[1].toLowerCase() + " appears");
+                        System.out.println("\t" + concManager.lineListQuery(userCommand[1].toLowerCase()).toString());
+                        ArrayList<Integer> arrList = concManager.lineListQuery(userCommand[1].toLowerCase());
+                        if (arrList == null) {
+                            System.out.println("\t" + userCommand[1].toLowerCase() + " does not appear in the concordance.");
+                        } else {
+                            System.out.print("\tLine numbers where " + userCommand[1].toLowerCase() + " appears: ");
 
-                        for (int i = 0; i < arrList.size(); i++) {
-                            System.out.print(arrList.get(i) + ", ");
+                            for (int i = 0; i < arrList.size(); i++) {
+                                System.out.print(arrList.get(i) + ", ");
+                            }
+                            System.out.println();
                         }
-                        System.out.println();
+                    } catch (ArrayIndexOutOfBoundsException aioobe) {
+                        System.out.println("\tInvalid command syntax: <command> <param>");
                     }
                 }
                 break;
@@ -175,6 +187,7 @@ public class CommandLine {
             case ("qnline"):
                 command = Command.QNLINE;
                 if (flowStateTransition(command)) {
+                    try{
                     System.out.println("\tNumber of lines " + userCommand[1].toLowerCase() + " appears");
                     System.out.println("\t" + concManager.numLineListQuery(userCommand[1]).toString().toLowerCase());
                     int lineCount = concManager.numLineListQuery(userCommand[1].toLowerCase());
@@ -182,6 +195,10 @@ public class CommandLine {
                         System.out.println("\t" + userCommand[1].toLowerCase() + " does not appear in the concordance.");
                     } else {
                         System.out.println("\t" + userCommand[1].toLowerCase() + " appears on " + lineCount + " line(s)");
+                    }
+                    }
+                    catch(ArrayIndexOutOfBoundsException aioobe){
+                        System.out.println("\tInvalid command syntax: <command> <param>");
                     }
                 }
                 break;
@@ -191,9 +208,14 @@ public class CommandLine {
             case ("qappr"):
                 command = Command.QAPPR;
                 if (flowStateTransition(command)) {
+                    try{
                     int wordCount = concManager.appearQuery(userCommand[1].toLowerCase());
                     System.out.println("\t" + userCommand[1].toLowerCase() + " appears " + wordCount + ((wordCount == 1) ? " time" : " times"));
-                }
+                    }
+                    catch(ArrayIndexOutOfBoundsException aioobe){
+                        System.out.println("\tInvalid command syntax: <command> <param>");
+                    }
+                    }
                 break;
             /**
              * Shows target word rank
@@ -201,6 +223,7 @@ public class CommandLine {
             case ("qrank"):
                 command = Command.QRANK;
                 if (flowStateTransition(command)) {
+                    try{
                     System.out.print("\t" + userCommand[1].toLowerCase() + " rank:");
                     System.out.println(" " + concManager.rankQuery(userCommand[1].toLowerCase()));
                     int rank = concManager.rankQuery(userCommand[1].toLowerCase());
@@ -208,6 +231,10 @@ public class CommandLine {
                         System.out.println("\t" + userCommand[1].toLowerCase() + " does not appear in the concordance.");
                     } else {
                         System.out.println("\tRank: " + rank);
+                    }
+                    }
+                    catch(ArrayIndexOutOfBoundsException aioobe){
+                        System.out.println("Invalid command syntax: <command> <param>");
                     }
                 }
                 break;
@@ -218,7 +245,7 @@ public class CommandLine {
             case ("qdist"):
                 command = Command.QDIST;
                 if (flowStateTransition(command)) {
-
+                    try{
                     System.out.println("\tNumber of words that appear " + userCommand[2] + "line(s) away from " + userCommand[1].toLowerCase());
                     System.out.println("\t" + concManager.distanceQuery(userCommand[1].toLowerCase(), Integer.parseInt(userCommand[2]), Integer.parseInt(userCommand[3])));
                     String[] wordArray = concManager.distanceQuery("produced", 3, 27);
@@ -230,6 +257,10 @@ public class CommandLine {
                         System.out.print(wordArray[i] + " ");
                     }
                     System.out.println();
+                    }
+                    catch(ArrayIndexOutOfBoundsException aioobe){
+                        System.out.println("Invalid command syntax: <command> <param> <param>");
+                    }
                 }
                 break;
             /**
@@ -283,7 +314,7 @@ public class CommandLine {
      */
     private boolean flowStateTransition(Command c) {
         if (flowState == FlowState.SETUP && c != Command.SETDIR) {
-            System.out.println("\tDirectory isn't set. Please enter a directory path");
+            System.out.println("\tA valid directory isn't set. Please set a valid directory path.");
             return false;
         } else if (flowState == FlowState.FETCH && !(c != Command.LOADBK || c != Command.LOADCS || c != Command.FINDBK
                 || c != Command.LISTBK)) {
