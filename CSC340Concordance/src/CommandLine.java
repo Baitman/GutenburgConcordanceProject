@@ -208,7 +208,6 @@ public class CommandLine {
                 command = Command.QNLINE;
                 if (flowStateTransition(command)) {
                     try {
-                        System.out.println("\tNumber of lines " + userCommand[1].toLowerCase() + " appears");
                         System.out.println("\t" + concManager.numLineListQuery(userCommand[1]).toString().toLowerCase());
                         int lineCount = concManager.numLineListQuery(userCommand[1].toLowerCase());
                         if (lineCount == 0) {
