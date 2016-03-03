@@ -183,7 +183,7 @@ public class CommandLine {
                         System.out.println("Error in saving concordance. Try again.");
                     }
                     catch(ArrayIndexOutOfBoundsException aioobe){
-                        System.out.println("\tInvalid command syntax: <command> <param>");
+                        System.out.println("\tInvalid command syntax: <command> <filename>");
                     }
                 }
                 break;
@@ -205,7 +205,7 @@ public class CommandLine {
                             }
                         }
                     } catch (ArrayIndexOutOfBoundsException aioobe) {
-                        System.out.println("\tInvalid command syntax: <command> <param>");
+                        System.out.println("\tInvalid command syntax: <command> <string>");
                     } catch (NullPointerException npe) {
                         System.out.println("\tPlease make a concordance before performing a query");
                     }
@@ -226,7 +226,7 @@ public class CommandLine {
                             System.out.println("\t" + userCommand[1].toLowerCase() + " appears on " + lineCount + " line(s)");
                         }
                     } catch (ArrayIndexOutOfBoundsException aioobe) {
-                        System.out.println("\tInvalid command syntax: <command> <param>");
+                        System.out.println("\tInvalid command syntax: <command> <string>");
                     } catch (NullPointerException npe) {
                         System.out.println("\tPlease make a concordance before performing a query");
                     }
@@ -242,7 +242,7 @@ public class CommandLine {
                         int wordCount = concManager.appearQuery(userCommand[1].toLowerCase());
                         System.out.println("\t" + userCommand[1].toLowerCase() + " appears " + wordCount + ((wordCount == 1) ? " time" : " times"));
                     } catch (ArrayIndexOutOfBoundsException aioobe) {
-                        System.out.println("\tInvalid command syntax: <command> <param>");
+                        System.out.println("\tInvalid command syntax: <command> <string>");
                     } catch (NullPointerException npe) {
                         System.out.println("\tPlease make a concordance before performing a query");
                     }
@@ -264,7 +264,7 @@ public class CommandLine {
                             System.out.println("\tRank: " + rank);
                         }
                     } catch (ArrayIndexOutOfBoundsException aioobe) {
-                        System.out.println("Invalid command syntax: <command> <param>");
+                        System.out.println("Invalid command syntax: <command> <string>");
                     } catch (NullPointerException npe) {
                         System.out.println("\tPlease make a concordance before performing a query");
                     }
@@ -278,7 +278,7 @@ public class CommandLine {
                 command = Command.QDIST;
                 if (flowStateTransition(command)) {
                     try {
-                        System.out.println("\tNumber of words that appear " + userCommand[2] + "line(s) away from " + userCommand[1].toLowerCase());
+                        System.out.println("\tLocations of words that appear " + userCommand[2] + "line(s) away from " + userCommand[1].toLowerCase());
                         String[] wordArray = concManager.distanceQuery(userCommand[1].toLowerCase(), Integer.parseInt(userCommand[2]), Integer.parseInt(userCommand[3]));
                         
                         for (int i = 0; i < wordArray.length; i++) {
@@ -289,7 +289,7 @@ public class CommandLine {
                         }
                         System.out.println();
                     } catch (ArrayIndexOutOfBoundsException aioobe) {
-                        System.out.println("Invalid command syntax: <command> <param> <param>");
+                        System.out.println("Invalid command syntax: <command> <string> <integer>");
                     } catch (NullPointerException npe) {
                         System.out.println("\tPlease make a concordance before performing a query");
                     }
@@ -317,9 +317,8 @@ public class CommandLine {
                     if (lines != null) {
                         System.out.print("\tThese words are adjacent on lines: ");
                         for (int i = 0; i < lines.size(); i++) {
-                            System.out.print(lines.get(i) + ", ");
+                            System.out.println("\t"+lines.get(i));
                         }
-                        System.out.println("");
                     } else {
                         System.out.println("\tOne or more selected word does not appear in the concordance.");
                     }
