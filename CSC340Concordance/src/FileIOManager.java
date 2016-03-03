@@ -83,7 +83,7 @@ public class FileIOManager {
         ObjectOutputStream oss = null;
 
         try {
-            fos = new FileOutputStream(new File("con.ser"));
+            fos = new FileOutputStream(new File("concor.ser"));
             oss = new ObjectOutputStream(fos);
         } catch (IOException oops) {
             oops.printStackTrace();
