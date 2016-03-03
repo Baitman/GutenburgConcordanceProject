@@ -55,20 +55,18 @@ public class FileIOManager {
      *
      * @param con the concordance
      * @param filename
+     * @throws FileNotFoundException, IOException if there is an error in saving
+     * the concordance.
      */
-    public void saveConc(Concordance con, String filename) {
+    public void saveConc(Concordance con, String filename) throws FileNotFoundException, IOException {
         String inputcon = filename + ".ser";
         //String contitle = ;
 
         FileOutputStream fos;
         ObjectOutputStream oss = null;
 
-        try {
-            fos = new FileOutputStream(new File(inputcon));
-            oss = new ObjectOutputStream(fos);
-        } catch (IOException oops) {
-            oops.printStackTrace();
-        }
+        fos = new FileOutputStream(new File(inputcon));
+        oss = new ObjectOutputStream(fos);
 
     }
 
@@ -98,11 +96,12 @@ public class FileIOManager {
      *
      * @param condir
      * @return concordance
-     * @throws FileNotFoundException,IOException if the specified concordance doesn't exist.
+     * @throws FileNotFoundException,IOException if the specified concordance
+     * doesn't exist.
      */
     public Concordance loadConc(String condir) throws FileNotFoundException, IOException, ClassNotFoundException {
 
-        FileInputStream fis = new FileInputStream(currentDirectory.getPath()+File.pathSeparator+condir);
+        FileInputStream fis = new FileInputStream(currentDirectory.getPath() + File.pathSeparator + condir);
         ObjectInputStream ois = new ObjectInputStream(fis);
 
         Concordance c = (Concordance) ois.readObject();
@@ -114,9 +113,11 @@ public class FileIOManager {
      * Loads a standard gutenburg ebook '.txt' into memory
      *
      * @param bookTitle
-     * @throws FileNotFoundException, IOException if there is an issue with loading the text file
-     * @throws GutenFreeException is thrown if the file isn't from Project Gutenberg, or contains the Gutenberg preamble, 
-     * program execution will continue.
+     * @throws FileNotFoundException, IOException if there is an issue with
+     * loading the text file
+     * @throws GutenFreeException is thrown if the file isn't from Project
+     * Gutenberg, or contains the Gutenberg preamble, program execution will
+     * continue.
      */
     public void loadBook(String bookTitle) throws FileNotFoundException, IOException, GutenFreeException {
         String tempString = "";
@@ -152,8 +153,8 @@ public class FileIOManager {
      * View all '.txt' files in the current directory
      *
      * @return the txt files in the current directory
-     * @throws FileNotFoundException if there is an error in displaying the 
-     * txt files in the directoy.
+     * @throws FileNotFoundException if there is an error in displaying the txt
+     * files in the directory.
      */
 
 public String viewBooks() throws FileNotFoundException{
@@ -200,8 +201,10 @@ public String viewBooks() throws FileNotFoundException{
      * Displays all the saved concordance files in the current directory
      *
      * @return the list of Concordances in the directory
+     * @throws FileNotFoundException if there is an error in displaying the concordance
+     * files in the directory
      */
-    public String viewSavedConc() {
+    public String viewSavedConc()throws FileNotFoundException {
         String dirString = "";
         File[] dirlist = currentDirectory.listFiles();
         for (int i = 0; i < dirlist.length; i++) {

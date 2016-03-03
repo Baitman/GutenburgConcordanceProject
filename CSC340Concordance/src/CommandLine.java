@@ -23,8 +23,8 @@ public class CommandLine {
      */
     private enum Command {
 
-        START, SETDIR, FINDBK, LISTBK, LOADBK, MAKECS,
-        LISTCS, LOADCS, SAVECS, QLINE, QNLINE,
+        START, SETDIR, LISTCS, LISTBK, LOADBK, MAKECS,
+        LOADCS, SAVECS, QLINE, QNLINE,
         QAPPR, QRANK, QDIST, QADJ, INV, EXIT
     }
 
@@ -77,13 +77,13 @@ public class CommandLine {
              * Finds a book on Gutenberg.org, however for this implementation,
              * it will simply display the contents of the directory.
              */
-            case ("findbk"):
-                command = Command.FINDBK;
+            case ("listcs"):
+                command = Command.LISTCS;
                 if (flowStateTransition(command)) {
                     try {
-                        System.out.println(fileIO.viewBooks());
+                        System.out.println(fileIO.viewSavedConc());
                     } catch (FileNotFoundException fnfe) {
-                        System.out.println("\tError finding book. Check directory paths, filenames, and extensions");
+                        System.out.println("\tError with displaying concordances in the directory");
                         break;
                     }
                 }
@@ -97,7 +97,7 @@ public class CommandLine {
                     try {
                         System.out.println(fileIO.viewBooks());
                     } catch (FileNotFoundException fnfe) {
-                        System.out.println("\tError with displaying files in the directory");
+                        System.out.println("\tError with displaying text files in the directory");
                         break;
                     }
                 }
@@ -172,8 +172,19 @@ public class CommandLine {
             case ("savecs"):
                 command = Command.SAVECS;
                 if (flowStateTransition(command)) {
+                    try{
                     System.out.println("\tSaved.");
-                    fileIO.saveConc(concordance);
+                    fileIO.saveConc(concordance, userCommand[1]);
+                    }
+                    catch(FileNotFoundException fnfe){
+                        System.out.println("Error in saving concordance. Check for similar filenames inside directory");
+                    }
+                    catch(IOException ioe){
+                        System.out.println("Error in saving concordance. Try again.");
+                    }
+                    catch(ArrayIndexOutOfBoundsException aioobe){
+                        System.out.println("\tInvalid command syntax: <command> <param>");
+                    }
                 }
                 break;
             /**
@@ -343,7 +354,7 @@ public class CommandLine {
         if (flowState == FlowState.SETUP && c != Command.SETDIR) {
             System.out.println("\tA valid directory isn't set. Please set a valid directory path.");
             return false;
-        } else if (flowState == FlowState.FETCH && !(c != Command.LOADBK || c != Command.LOADCS || c != Command.FINDBK
+        } else if (flowState == FlowState.FETCH && !(c != Command.LOADBK || c != Command.LOADCS || c != Command.LISTCS
                 || c != Command.LISTBK)) {
             System.out.println("\tA book or concordance must be loaded at this point.");
             System.out.println("\tPlease load a book or concordance");
