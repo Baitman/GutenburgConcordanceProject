@@ -117,8 +117,11 @@ public class Concordance implements Serializable {
             }
             else{  
                 Word newWord = new Word(cleanString);                
-                concordance.put(cleanString, newWord);                
-                rankSystemArray.add(newWord);                
+                concordance.put(cleanString, newWord);
+                //Exclude stop words from the ranking system
+                if(!isStopWord(cleanString){
+                    rankSystemArray.add(newWord); 
+                }
                 ((Word)concordance.get(cleanString)).incOccurrence();
                 ((Word)concordance.get(cleanString)).addNewLine(lineCount);
                 ((Word)concordance.get(cleanString)).addWordNumber(wordCount);
@@ -200,6 +203,32 @@ public class Concordance implements Serializable {
      */
     public HashMap getConcordance() {
         return this.concordance;
+    }
+    
+    /**
+     * Method to check if a word is a stop word
+     * Stop words are common words to be excluded from ranking system
+     * 
+     * @return true if the parameter is a stop word, false otherwise
+     */
+     
+    private boolean isStopWord(String word){
+         /**
+         * An array of stop words to exclude from rank query
+         * These words will have a rank of 0
+         */
+        String[] stopWords = {"a",  "also", "am", "an", "and",  "are",  "as", "be", "been",  "being","but", "by", "can", "cannot", "cant", "do",             
+        "for", "get", "give", "had", "has", "hasnt", "have", "he", "her", "here", "hers", "herself","him", "himself", "his", "in", "into", "is", "it", "its", "itself", 
+         "ltd","may", "me","my", "myself", "no",  "nor", "not", "now",  "of", "or", "other",  "our", "ours", "she","so",  "that", "the", "their", "them",  "there", 
+         "these", "they", "this",  "to",   "us",  "was", "we",  "you"};
+        
+        for(int i =0; i < stopWords.length; i++){
+            if(stopWords[i].equals(word)){
+                System.out.println("Stop Word: " + stopWords[i] + "\tWord: " + word);
+                return true;
+            }
+        }
+        return false;        
     }
 }
   
