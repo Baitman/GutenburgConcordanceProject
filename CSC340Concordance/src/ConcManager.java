@@ -89,7 +89,7 @@ public class ConcManager{
      */
     public Integer rankQuery(String word){     
         if(isNotValid(word))
-            return 0;              
+            return -1;              
         return ((Word)HashTable.get(word)).getRank();
     }
     
