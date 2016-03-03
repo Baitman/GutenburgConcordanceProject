@@ -6,7 +6,8 @@ import java.util.Set;
 /**
  * Concordance Manager class
  * 
- * @author Matt
+ * @author Matthew Yengle
+ * March 03, 2016
  */
 public class ConcManager{
     /**
