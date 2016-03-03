@@ -5,7 +5,8 @@ import java.util.HashMap;
 /**
  * Concordance class.
  *
- * @author Charles Mayse, Matthew Yengle
+ * @author Charles Mayse, Matthew Yengle 
+ * March 03, 2016
  */
 public class Concordance implements Serializable {
 
