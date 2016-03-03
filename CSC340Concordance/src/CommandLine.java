@@ -264,7 +264,6 @@ public class CommandLine {
                     try {
                         System.out.println("\tNumber of words that appear " + userCommand[2] + "line(s) away from " + userCommand[1].toLowerCase());
                         System.out.println("\t" + concManager.distanceQuery(userCommand[1].toLowerCase(), Integer.parseInt(userCommand[2]), Integer.parseInt(userCommand[3])));
-                        String[] wordArray = concManager.distanceQuery("produced", 3, 27);
 
                         for (int i = 0; i < wordArray.length; i++) {
                             if (wordArray[i] == null) {
