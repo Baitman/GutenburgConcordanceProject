@@ -194,8 +194,6 @@ public class CommandLine {
                 command = Command.QLINE;
                 if (flowStateTransition(command)) {
                     try {
-                        System.out.println("\tThe lines in which " + userCommand[1].toLowerCase() + " appears");
-                        System.out.println("\t" + concManager.lineListQuery(userCommand[1].toLowerCase()).toString());
                         ArrayList<Integer> arrList = concManager.lineListQuery(userCommand[1].toLowerCase());
                         if (arrList == null) {
                             System.out.println("\t" + userCommand[1].toLowerCase() + " does not appear in the concordance.");
@@ -203,9 +201,8 @@ public class CommandLine {
                             System.out.print("\tLine numbers where " + userCommand[1].toLowerCase() + " appears: ");
 
                             for (int i = 0; i < arrList.size(); i++) {
-                                System.out.print(arrList.get(i) + ", ");
+                                System.out.println("\t" + arrList.get(i));
                             }
-                            System.out.println();
                         }
                     } catch (ArrayIndexOutOfBoundsException aioobe) {
                         System.out.println("\tInvalid command syntax: <command> <param>");
@@ -282,13 +279,13 @@ public class CommandLine {
                 if (flowStateTransition(command)) {
                     try {
                         System.out.println("\tNumber of words that appear " + userCommand[2] + "line(s) away from " + userCommand[1].toLowerCase());
-                        System.out.println("\t" + concManager.distanceQuery(userCommand[1].toLowerCase(), Integer.parseInt(userCommand[2]), Integer.parseInt(userCommand[3])));
-
+                        String[] wordArray = concManager.distanceQuery(userCommand[1].toLowerCase(), Integer.parseInt(userCommand[2]), Integer.parseInt(userCommand[3]));
+                        
                         for (int i = 0; i < wordArray.length; i++) {
                             if (wordArray[i] == null) {
                                 continue;
                             }
-                            System.out.print(wordArray[i] + " ");
+                            System.out.print("\t" + wordArray[i] + " ");
                         }
                         System.out.println();
                     } catch (ArrayIndexOutOfBoundsException aioobe) {
