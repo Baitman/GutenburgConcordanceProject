@@ -225,7 +225,6 @@ public class Concordance implements Serializable {
         
         for(int i =0; i < stopWords.length; i++){
             if(stopWords[i].equals(word)){
-                System.out.println("Stop Word: " + stopWords[i] + "\tWord: " + word);
                 return true;
             }
         }
