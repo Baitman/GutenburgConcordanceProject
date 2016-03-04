@@ -2,9 +2,8 @@
 /**
  * CommandLine interface.
  *
- * @author Charles Mayse
+ * @author Charles Mayse 3/3/16
  */
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -172,17 +171,14 @@ public class CommandLine {
             case ("savecs"):
                 command = Command.SAVECS;
                 if (flowStateTransition(command)) {
-                    try{
-                    System.out.println("\tSaved.");
-                    fileIO.saveConc(concordance, userCommand[1]);
-                    }
-                    catch(FileNotFoundException fnfe){
+                    try {
+                        System.out.println("\tSaved.");
+                        fileIO.saveConc(concordance, userCommand[1]);
+                    } catch (FileNotFoundException fnfe) {
                         System.out.println("Error in saving concordance. Check for similar filenames inside directory");
-                    }
-                    catch(IOException ioe){
+                    } catch (IOException ioe) {
                         System.out.println("Error in saving concordance. Try again.");
-                    }
-                    catch(ArrayIndexOutOfBoundsException aioobe){
+                    } catch (ArrayIndexOutOfBoundsException aioobe) {
                         System.out.println("\tInvalid command syntax: <command> <filename>");
                     }
                 }
@@ -218,7 +214,6 @@ public class CommandLine {
                 command = Command.QNLINE;
                 if (flowStateTransition(command)) {
                     try {
-                        System.out.println("\t" + concManager.numLineListQuery(userCommand[1]).toString().toLowerCase());
                         int lineCount = concManager.numLineListQuery(userCommand[1].toLowerCase());
                         if (lineCount == 0) {
                             System.out.println("\t" + userCommand[1].toLowerCase() + " does not appear in the concordance.");
@@ -259,6 +254,8 @@ public class CommandLine {
                         System.out.println(" " + concManager.rankQuery(userCommand[1].toLowerCase()));
                         int rank = concManager.rankQuery(userCommand[1].toLowerCase());
                         if (rank == 0) {
+                            System.out.println("\t" + userCommand[1].toLowerCase() + " is a stop word, has a rank of 0.");
+                        } else if (rank < 0) {
                             System.out.println("\t" + userCommand[1].toLowerCase() + " does not appear in the concordance.");
                         } else {
                             System.out.println("\tRank: " + rank);
@@ -280,7 +277,7 @@ public class CommandLine {
                     try {
                         System.out.println("\tLocations of words that appear " + userCommand[2] + "line(s) away from " + userCommand[1].toLowerCase());
                         String[] wordArray = concManager.distanceQuery(userCommand[1].toLowerCase(), Integer.parseInt(userCommand[2]), Integer.parseInt(userCommand[3]));
-                        
+
                         for (int i = 0; i < wordArray.length; i++) {
                             if (wordArray[i] == null) {
                                 continue;
@@ -317,7 +314,7 @@ public class CommandLine {
                     if (lines != null) {
                         System.out.print("\tThese words are adjacent on lines: ");
                         for (int i = 0; i < lines.size(); i++) {
-                            System.out.println("\t"+lines.get(i));
+                            System.out.println("\t" + lines.get(i));
                         }
                     } else {
                         System.out.println("\tOne or more selected word does not appear in the concordance.");
