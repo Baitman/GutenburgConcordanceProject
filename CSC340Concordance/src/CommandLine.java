@@ -116,7 +116,7 @@ public class CommandLine {
                     System.out.println("\tError loading file, be sure to check filenames and extensions");
                     break;
                 } catch (GutenFreeException gfe) {
-                    System.out.println("\tWarning: File is not from Gutenberg.org");
+                    System.out.println("\tWarning: File is not from Gutenberg.org, concordance will not be made.");
                     break;
                 } catch (IOException ex) {
                     System.out.println("\tError with loading file");

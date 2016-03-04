@@ -7,7 +7,7 @@
 */
  
 public class GutenFreeException extends Exception{
-    public static final long serialVersionUID = 42L;
+    public static final long serialVersionUID = 1L;
     // exception code will be placed here
     // 1. Check if it is a .txt file
     // 2. Check if that .txt file contains the *** line
