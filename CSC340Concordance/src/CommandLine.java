@@ -275,7 +275,7 @@ public class CommandLine {
                 command = Command.QDIST;
                 if (flowStateTransition(command)) {
                     try {
-                        System.out.println("\tLocations of words that appear " + userCommand[2] + "line(s) away from " + userCommand[1].toLowerCase());
+                        System.out.println("\tList of words that appear " + userCommand[2] + " words(s) away from " + userCommand[1].toLowerCase());
                         String[] wordArray = concManager.distanceQuery(userCommand[1].toLowerCase(), Integer.parseInt(userCommand[2]), Integer.parseInt(userCommand[3]));
 
                         for (int i = 0; i < wordArray.length; i++) {
