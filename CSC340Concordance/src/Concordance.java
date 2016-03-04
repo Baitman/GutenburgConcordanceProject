@@ -120,7 +120,7 @@ public class Concordance implements Serializable {
                 Word newWord = new Word(cleanString);                
                 concordance.put(cleanString, newWord);
                 //Exclude stop words from the ranking system
-                if(!isStopWord(cleanString){
+                if(!isStopWord(cleanString)){
                     rankSystemArray.add(newWord); 
                 }
                 ((Word)concordance.get(cleanString)).incOccurrence();
