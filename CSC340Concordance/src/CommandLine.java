@@ -1,9 +1,13 @@
 
+
 /**
  * CommandLine interface.
  *
- * @author Charles Mayse 3/3/16
+ * @author Charles Mayse 
+ * 
+ * Complete: 3/4/16
  */
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -94,7 +98,7 @@ public class CommandLine {
                 command = Command.LISTBK;
                 if (flowStateTransition(command)) {
                     try {
-                        System.out.println(fileIO.viewBooks());
+                        System.out.print(fileIO.viewBooks());
                     } catch (FileNotFoundException fnfe) {
                         System.out.println("\tError with displaying text files in the directory");
                         break;
@@ -107,11 +111,12 @@ public class CommandLine {
             case ("loadbk"):
                 command = Command.LOADBK;
                 try {
+                    System.out.print("\tLoading text file...");
                     if (flowStateTransition(command)) {
                         fileIO.loadBook(userCommand[1]);
                     }
                     flowState = FlowState.MANIPULATE;
-                    System.out.println("\tFile is loaded.");
+                    System.out.println("loaded.");
                 } catch (FileNotFoundException fnfe) {
                     System.out.println("\tError loading file, be sure to check filenames and extensions");
                     break;
@@ -133,15 +138,19 @@ public class CommandLine {
                 command = Command.LOADCS;
                 try {
                     if (flowStateTransition(command)) {
-                        fileIO.loadConc(userCommand[1]);
+                        System.out.println("\tLoading: " + fileIO.getCurrentDirectory()+File.separator+userCommand[1]);
+                        this.concordance = fileIO.loadConc(userCommand[1]);
+                        concManager = new ConcManager(concordance.getConcordance());
                     }
                     flowState = FlowState.MANIPULATE;
-                    System.out.println("Concordance loaded.");
+                    System.out.println("\tConcordance loaded.");
                 } catch (FileNotFoundException fnfe) {
                     System.out.println("\tConcordance not found. Check file name and extension");
                     break;
                 } catch (IOException ioe) {
                     System.out.println("\tError loading Concordance. Try again.");
+                    System.out.println(ioe.getMessage());
+                    ioe.printStackTrace();
                     break;
                 } catch (ClassNotFoundException cnfe) {
                     System.out.println("\tConcordance not found. Check file name and extension");
@@ -172,8 +181,8 @@ public class CommandLine {
                 command = Command.SAVECS;
                 if (flowStateTransition(command)) {
                     try {
-                        System.out.println("\tSaved.");
                         fileIO.saveConc(concordance, userCommand[1]);
+                        System.out.println("\tSaved.");
                     } catch (FileNotFoundException fnfe) {
                         System.out.println("Error in saving concordance. Check for similar filenames inside directory");
                     } catch (IOException ioe) {
@@ -194,7 +203,7 @@ public class CommandLine {
                         if (arrList == null) {
                             System.out.println("\t" + userCommand[1].toLowerCase() + " does not appear in the concordance.");
                         } else {
-                            System.out.print("\tLine numbers where " + userCommand[1].toLowerCase() + " appears: ");
+                            System.out.print("\tLine numbers where " + userCommand[1].toLowerCase() + " appears: \n");
 
                             for (int i = 0; i < arrList.size(); i++) {
                                 System.out.println("\t" + arrList.get(i));
@@ -250,18 +259,16 @@ public class CommandLine {
                 command = Command.QRANK;
                 if (flowStateTransition(command)) {
                     try {
-                        System.out.print("\t" + userCommand[1].toLowerCase() + " rank:");
-                        System.out.println(" " + concManager.rankQuery(userCommand[1].toLowerCase()));
                         int rank = concManager.rankQuery(userCommand[1].toLowerCase());
                         if (rank == 0) {
-                            System.out.println("\t" + userCommand[1].toLowerCase() + " is a stop word, has a rank of 0.");
-                        } else if (rank < 0) {
+                            System.out.println("\t" + userCommand[1].toLowerCase() + " is a common word and excluded from rank");
+                        } else if (rank == -1) {
                             System.out.println("\t" + userCommand[1].toLowerCase() + " does not appear in the concordance.");
                         } else {
                             System.out.println("\tRank: " + rank);
                         }
                     } catch (ArrayIndexOutOfBoundsException aioobe) {
-                        System.out.println("Invalid command syntax: <command> <string>");
+                        System.out.println("\tInvalid command syntax: <command> <string>");
                     } catch (NullPointerException npe) {
                         System.out.println("\tPlease make a concordance before performing a query");
                     }
@@ -275,18 +282,14 @@ public class CommandLine {
                 command = Command.QDIST;
                 if (flowStateTransition(command)) {
                     try {
-                        System.out.println("\tList of words that appear " + userCommand[2] + " words(s) away from " + userCommand[1].toLowerCase());
                         String[] wordArray = concManager.distanceQuery(userCommand[1].toLowerCase(), Integer.parseInt(userCommand[2]), Integer.parseInt(userCommand[3]));
-
-                        for (int i = 0; i < wordArray.length; i++) {
-                            if (wordArray[i] == null) {
-                                continue;
-                            }
-                            System.out.print("\t" + wordArray[i] + " ");
+                        System.out.println("\tLocations of words that appear " + userCommand[2] + "line(s) away from " + userCommand[1].toLowerCase());
+                        for (String word : wordArray) {
+                            System.out.print(word + " ");
                         }
                         System.out.println();
                     } catch (ArrayIndexOutOfBoundsException aioobe) {
-                        System.out.println("Invalid command syntax: <command> <string> <integer>");
+                        System.out.println("Invalid command syntax: <command> <string> <integer> <integer>");
                     } catch (NullPointerException npe) {
                         System.out.println("\tPlease make a concordance before performing a query");
                     }
@@ -311,13 +314,13 @@ public class CommandLine {
                         break;
                     }
 
-                    if (lines != null) {
-                        System.out.print("\tThese words are adjacent on lines: ");
-                        for (int i = 0; i < lines.size(); i++) {
-                            System.out.println("\t" + lines.get(i));
+                    if (lines != null && lines.size()>0) {
+                        System.out.println("\tThese words are adjacent on lines: ");
+                        for (Integer line : lines) {
+                            System.out.println("\t" + line);
                         }
                     } else {
-                        System.out.println("\tOne or more selected word does not appear in the concordance.");
+                        System.out.println("\tOne or more selected word does not appear adjacent in the concordance.");
                     }
                 }
                 break;

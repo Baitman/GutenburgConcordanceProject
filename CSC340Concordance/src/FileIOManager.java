@@ -1,18 +1,20 @@
 
+
 /**
  * Accomplishes 5 tasks. 1. Load a book into memory 2. Save a book into a
  * specified directory 3. Load a concordance locally to memory 4. Save a
  * concordance into a specified directory 5. View saved books and concordance
  *
  * @author Ochaun Marshall & Charles Mayse
- * 3/3/16
+ * 
+ * Complete 3/4/16
  */
 import java.io.*;
 import java.util.*;
 
 public class FileIOManager {
-
     private File currentDirectory;
+    private Concordance concordance;
     private FileOutputStream outputStream;
     private String text;
 
@@ -66,30 +68,12 @@ public class FileIOManager {
         FileOutputStream fos;
         ObjectOutputStream oss = null;
 
-        fos = new FileOutputStream(new File(inputcon));
+        fos = new FileOutputStream(new File(currentDirectory + File.separator + inputcon));
         oss = new ObjectOutputStream(fos);
-
-    }
-
-    /**
-     * Creates a concordance in the current directory
-     *
-     * @param con
-     */
-    public void saveConc(Concordance con) {
-        //String inputcon = filename + ".ser";
-        //String contitle = ;
-
-        FileOutputStream fos;
-        ObjectOutputStream oss = null;
-
-        try {
-            fos = new FileOutputStream(new File("concor.ser"));
-            oss = new ObjectOutputStream(fos);
-        } catch (IOException oops) {
-            oops.printStackTrace();
-        }
-
+        
+        oss.writeObject(con);
+        
+        oss.close();
     }
 
     /**
@@ -102,12 +86,12 @@ public class FileIOManager {
      */
     public Concordance loadConc(String condir) throws FileNotFoundException, IOException, ClassNotFoundException {
 
-        FileInputStream fis = new FileInputStream(currentDirectory.getPath() + File.pathSeparator + condir);
+        FileInputStream fis = new FileInputStream(currentDirectory.getPath() + File.separator + condir);
         ObjectInputStream ois = new ObjectInputStream(fis);
 
-        Concordance c = (Concordance) ois.readObject();
-        return c;
-
+        Object o = ois.readObject();
+        ois.close();
+        return (Concordance) o;
     }
 
     /**
@@ -157,8 +141,7 @@ public class FileIOManager {
      * @throws FileNotFoundException if there is an error in displaying the txt
      * files in the directory.
      */
-
-public String viewBooks() throws FileNotFoundException{
+    public String viewBooks() throws FileNotFoundException {
 
         String dirString = "";
         Scanner reader;
@@ -174,38 +157,37 @@ public String viewBooks() throws FileNotFoundException{
 
     }
 
-
- 
-/**
- * Displays all the .txt files in a specified directory
- * @param bookDir
- * @return 
- */
-   public String viewBooks(String bookDir) throws FileNotFoundException {
+    /**
+     * Displays all the .txt files in a specified directory
+     *
+     * @param bookDir
+     * @return
+     */
+    public String viewBooks(String bookDir) throws FileNotFoundException {
         String dirString = "";
         File dir = new File(bookDir);
         File[] dirlist = dir.listFiles();
-        
+
         System.out.println("hello");
         Scanner reader;
         System.out.println("goodbye");
-        
+
         for (int i = 0; i < dirlist.length; i++) {
             if (dirlist[i].isFile() && dirlist[i].toString().contains(".txt")) {
-                dirString += "\t"+dirlist[i].getName()+"\n";
+                dirString += "\t" + dirlist[i].getName() + "\n";
             }
         }
         return dirString;
-}
+    }
 
     /**
      * Displays all the saved concordance files in the current directory
      *
      * @return the list of Concordances in the directory
-     * @throws FileNotFoundException if there is an error in displaying the concordance
-     * files in the directory
+     * @throws FileNotFoundException if there is an error in displaying the
+     * concordance files in the directory
      */
-    public String viewSavedConc()throws FileNotFoundException {
+    public String viewSavedConc() throws FileNotFoundException {
         String dirString = "";
         File[] dirlist = currentDirectory.listFiles();
         for (int i = 0; i < dirlist.length; i++) {

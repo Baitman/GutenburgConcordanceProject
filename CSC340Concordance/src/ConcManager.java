@@ -7,7 +7,7 @@ import java.util.Set;
  * Concordance Manager class
  * 
  * @author Matthew Yengle
- * March 03, 2016
+ * Complete March 03, 2016
  */
 public class ConcManager{
     /**

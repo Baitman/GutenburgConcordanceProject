@@ -5,7 +5,8 @@ import java.util.ArrayList;
  * Word Class
  * 
  * @author Matthew Yengle
- * March 03, 2016
+ * 
+ * Complete 3/4/16
  */
 
 public class Word implements Serializable {
